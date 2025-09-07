@@ -25,7 +25,7 @@ public class Conexion {
 
     private static final String jdbcURL = "jdbc:postgresql://localhost:5432/FerreteriaBD?useSSL=false";
     private static final String jdbcUsername = "postgres";
-    private static final String jdbcPassword = "root";
+    private static final String jdbcPassword = "dd22005";
 
     public Connection getConexion() {
         Connection con = null;
