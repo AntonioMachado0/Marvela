@@ -18,6 +18,7 @@ import java.sql.Statement;
  */
 public class Conexion {
 
+    //AGREGUE ESTO
     private Connection conexion = null;
     private static final ResultSet rs = null;
     private static Statement sentencia = null;
