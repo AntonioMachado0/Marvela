@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 @WebServlet(name = "CategoriaController", urlPatterns = {"/CategoriaController"})
 public class CategoriaController extends HttpServlet {
-
+//cambios de prueba
     private ArrayList<Categoria> listaCategoriasActividad;
     private ArrayList<Categoria> listaCategoriasActividad2;
 
