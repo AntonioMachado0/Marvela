@@ -18,7 +18,7 @@ import java.sql.Statement;
  */
 public class Conexion {
 
-    //AGREGUE ESTO
+   //Machado
     private Connection conexion = null;
     private static final ResultSet rs = null;
     private static Statement sentencia = null;
@@ -32,7 +32,7 @@ public class Conexion {
         Connection con = null;
         try {
             Class.forName("org.postgresql.Driver");
-            // Obtener la conexion
+            // Obtener la 
             con = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (SQLException ex) {
         } catch (Exception e) {
