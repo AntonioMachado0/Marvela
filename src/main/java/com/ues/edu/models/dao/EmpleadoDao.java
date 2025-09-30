@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -31,11 +32,26 @@ public class EmpleadoDao {
     private static final String UPDATE_EMPLEADO = "UPDATE empleado SET nombre_completo=?, fecha_nacimiento=?, numero_telefono=?, codigo_roles=? WHERE codigo_empleado=?";
     private static final String CARGAR = "SELECT * FROM empleado WHERE  codigo_empleado = ?";
     private static final String SELECT_ALL_EMPLEADOS = "SELECT e.codigo_empleado, e.nombre_completo,e.fecha_nacimiento, e.numero_telefono, r.nombre_rol as nombre_rol FROM empleado e INNER JOIN  rol r ON e.codigo_roles = r.codigo_roles";
-    private static final String SELECT_EMPLEADO_BY_ID = 
-        "SELECT e.codigo_empleado, e.nombre_completo, e.fecha_nacimiento, e.numero_telefono, r.codigo_roles, r.nombre_rol " +
-        "FROM empleado e " +
-        "INNER JOIN rol r ON e.codigo_roles = r.codigo_roles " +
-        "WHERE e.codigo_empleado = ?";
+    private static final String SELECT_EMPLEADO_BY_ID
+            = "SELECT e.codigo_empleado, e.nombre_completo, e.fecha_nacimiento, e.numero_telefono, r.codigo_roles, r.nombre_rol "
+            + "FROM empleado e "
+            + "INNER JOIN rol r ON e.codigo_roles = r.codigo_roles "
+            + "WHERE e.codigo_empleado = ?";
+    private static final String OBTENER_CORREO = "SELECT\n"
+            + "	usuario.correo\n"
+            + "FROM\n"
+            + "	empleado\n"
+            + "	INNER JOIN\n"
+            + "	rol\n"
+            + "	ON \n"
+            + "		empleado.codigo_roles = rol.codigo_roles\n"
+            + "	INNER JOIN\n"
+            + "	usuario\n"
+            + "	ON \n"
+            + "		empleado.codigo_empleado = usuario.codigo_empleado\n"
+            + "WHERE\n"
+            + "	rol.nombre_rol = 'Administrador'";
+
     public ArrayList<Empleado> mostrar(Integer estado, String quien) throws SQLException {
         System.out.println("ENTRO AL METODO DAO MOSTRAR");
         this.lista = new ArrayList<>();
@@ -117,15 +133,14 @@ public class EmpleadoDao {
 
         return resultado;
     }
-    
+
     public Empleado obtenerEmpleadoPorId(int codigoEmpleado) throws SQLException {
         Empleado empleado = null;
 
-        try (Connection connection = conexion.getConexion();
-             PreparedStatement ps = connection.prepareStatement(SELECT_EMPLEADO_BY_ID)) {
+        try ( Connection connection = conexion.getConexion();  PreparedStatement ps = connection.prepareStatement(SELECT_EMPLEADO_BY_ID)) {
 
             ps.setInt(1, codigoEmpleado);
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     empleado = new Empleado();
                     empleado.setCodigoEmpleado(rs.getInt("codigo_empleado"));
@@ -147,5 +162,25 @@ public class EmpleadoDao {
 
         return empleado;
     }
+
+    //METODO PARA OBTENER EL CORREO DEL ADMINISTRADOR
+    public String obtenerCorreoAdministrador() throws SQLException {
+    String correo = null;
+
+    try (Connection connection = conexion.getConexion();
+         PreparedStatement ps = connection.prepareStatement(OBTENER_CORREO);
+         ResultSet rs = ps.executeQuery()) {
+
+        if (rs.next()) {
+            correo = rs.getString("correo");
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error en obtenerCorreoAdministrador: " + e.getMessage());
+        throw e;
+    }
+
+    return correo;
+}
 
 }
