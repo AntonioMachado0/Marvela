@@ -19,8 +19,15 @@ import javax.swing.JOptionPane;
  */
 public class ProveedorDao {
 
-    Conexion conexion = null;
+   
     private ArrayList<Proveedores> listProveedor;
+     private ArrayList<Proveedores> listarCombo;
+    
+    
+    
+    
+    Conexion conexion = null;
+ 
     private ResultSet rs = null;
     private PreparedStatement ps;
     private Connection accesoDB;
@@ -32,6 +39,9 @@ public class ProveedorDao {
 
     private static final String CARGAR = "SELECT * FROM proveedores WHERE codigo_proveedor = ?";
 
+    
+    
+    
     public ProveedorDao() {
         this.conexion = new Conexion();
     }
@@ -166,5 +176,30 @@ public class ProveedorDao {
 
         return resultado;
     }
+//CRUD COMPRAS COMBO
+    private static final String CARGAR_COMBO_Proveedor = "SELECT a.codigo_proveedor, a.nombre_proveedor\n"
+            + "FROM proveedores a\n"
+            + "WHERE a.estado = TRUE;";
 
+    public ArrayList<Proveedores> cargarComboProveedor() throws SQLException {
+        listarCombo = new ArrayList();
+ System.out.println("ENTRO AL METODO DAO MOSTRAR");
+        try {
+            this.accesoDB = this.conexion.getConexion();
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_Proveedor);
+            this.rs = this.ps.executeQuery();
+            Proveedores c = null;
+            while (this.rs.next()) {
+                c = new Proveedores();
+                c.setCodigoProveedor(rs.getInt("codigo_proveedor"));
+                c.setNombreProveedor(rs.getString("nombre_proveedor"));
+                listarCombo.add(c);
+            }
+            conexion.cerrarConexiones();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return listarCombo;
+    }
 }

@@ -327,7 +327,7 @@ Swal.fire("Error", "Problema en la petición AJAX", "error");
 
         // Inicializar Flatpickr para el campo de fecha de registro
         flatpickr("#fecha_nacimiento", {
-        dateFormat: "Y-m-d",
+        dateFormat: "d-m-y",
                 minDate: "1990-01-01", // Se puede ajustar según el rango que necesites
                 maxDate: "today", // Para que no se pueda seleccionar fechas futuras
                 defaultDate: "1990-01-01", // Fecha que aparece por defecto al abrir el calendario

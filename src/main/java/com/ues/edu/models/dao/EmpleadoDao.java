@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,7 +23,8 @@ public class EmpleadoDao {
     Conexion conexion;
     private ArrayList<Empleado> lista;
     private ResultSet rs = null;
-
+    private PreparedStatement ps;
+    private Connection accesoDB;
     public EmpleadoDao() {
         this.conexion = new Conexion();
     }
@@ -146,6 +148,32 @@ public class EmpleadoDao {
         }
 
         return empleado;
+    }
+    public ArrayList<Empleado>listarCombo;
+    private static final String CARGAR_COMBO_EMPLEADO = "SELECT a.codigo_empleado, a.nombre_completo\n" +
+"            FROM empleado a";
+
+    public ArrayList<Empleado> cargarComboEmpleado() throws SQLException {
+        listarCombo = new ArrayList();
+ System.out.println("ENTRO AL METODO DAO MOSTRAR");
+        try {
+            this.accesoDB = this.conexion.getConexion();
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_EMPLEADO);
+            this.rs = this.ps.executeQuery();
+System.out.println("ENTRO AL METODO DAO MOSTRAR 22");
+            Empleado c = null;
+            while (this.rs.next()) {
+                c = new     Empleado();
+                c.setCodigoEmpleado(rs.getInt("codigo_empleado"));
+                c.setNombreCompleto(rs.getString("nombre_completo"));
+                listarCombo.add(c);
+            }
+            conexion.cerrarConexiones();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return listarCombo;
     }
 
 }

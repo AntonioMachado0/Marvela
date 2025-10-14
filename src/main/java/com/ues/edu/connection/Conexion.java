@@ -18,6 +18,10 @@ import java.sql.Statement;
  */
 public class Conexion {
 
+    public static Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     private Connection conexion = null;
     private static final ResultSet rs = null;
     private static Statement sentencia = null;

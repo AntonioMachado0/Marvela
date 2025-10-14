@@ -5,7 +5,7 @@
 package com.ues.edu.models.dao;
 
 import com.ues.edu.connection.Conexion;
-import com.ues.edu.models.Categoria;
+import com.ues.edu.models.Marca;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,55 +17,55 @@ import javax.swing.JOptionPane;
  *
  * @author Maris
  */
-public class CategoriaDao {
-
-    Conexion conexion = null;
-  private ArrayList<Categoria> listRolGrupo;
+public class MarcaDao {
+    
+  Conexion conexion = null;
+  private ArrayList<Marca> listMarca;
     private ResultSet rs = null;
     private PreparedStatement ps;
     private Connection accesoDB;
 //
-    private static final String SELECT_ALL = "SELECT * FROM categoria";
+    private static final String SELECT_ALL = "SELECT * FROM marca";
 
-    private static final String INSERTAR = "INSERT INTO categoria( nombre ) VALUES(?)";
+    private static final String INSERTAR = "insert into marca(nombre_marca) values (?)";
 
-    private static final String ACTUALIZAR = "UPDATE categoria SET nombre = ? WHERE  codigo_categoria= ?";
+    private static final String ACTUALIZAR = "UPDATE marca SET nombre_marca = ? WHERE  id_marca= ?";
 
-    private static final String CARGAR = "SELECT * FROM categoria WHERE  codigo_categoria = ?";
-    private static final String DELETE = "DELETE FROM categoria a WHERE a.codigo_categoria = ?";
+    private static final String CARGAR = "SELECT * FROM marca WHERE  id_marca = ?";
+    private static final String DELETE = "DELETE FROM marca a WHERE a.id_marca = ?";
 
-    public CategoriaDao() {
+    public MarcaDao() {
         this.conexion = new Conexion();
     }
     
     
     //Mostrar
-public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLException {
-        listRolGrupo = new ArrayList();
+public ArrayList<Marca> selectALL(Integer estado, String quien) throws SQLException {
+        listMarca = new ArrayList();
 
         try {
             this.accesoDB = this.conexion.getConexion();
             this.ps = this.accesoDB.prepareStatement(SELECT_ALL);
             this.rs = this.ps.executeQuery();
 
-            Categoria rg = null;
+            Marca rg = null;
             while (this.rs.next()) {
-                rg = new Categoria();
+                rg = new Marca();
 
-                rg.setCodigoCategoria(rs.getInt("codigo_categoria"));
-                rg.setNombre(rs.getString("nombre"));
+                rg.setCodigoMarca(rs.getInt("id_marca"));
+                rg.setMarca(rs.getString("nombre_marca"));
 
-                listRolGrupo.add(rg);
+                listMarca.add(rg);
             }
             conexion.cerrarConexiones();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        return listRolGrupo;
+        return listMarca;
     }
     
     //insertar
-    public String insert(Categoria categoria) throws SQLException {
+    public String insert(Marca marca) throws SQLException {
 
         String resultado;
         int resultado_insertar;
@@ -73,7 +73,7 @@ public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLEx
         try {
             this.accesoDB = this.conexion.getConexion();
             this.ps = this.accesoDB.prepareStatement(INSERTAR);
-            ps.setString(1, categoria.getNombre());
+            ps.setString(1, marca.getMarca());
             resultado_insertar = this.ps.executeUpdate();
 
             if (resultado_insertar > 0) {
@@ -89,36 +89,36 @@ public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLEx
     }
 
     //cargar datos 
-    public Categoria cargarDatos(Categoria categoria) throws SQLException {
-        Categoria listaCategoria = new Categoria();
+    public Marca cargarDatos(Marca marca) throws SQLException {
+        Marca listaMarca = new Marca();
 
         try {
             accesoDB = conexion.getConexion();
             ps = accesoDB.prepareStatement(CARGAR);
-            ps.setInt(1, categoria.getCodigoCategoria());
+            ps.setInt(1, marca.getCodigoMarca());
             rs = ps.executeQuery();
             while (rs.next()) {
-                listaCategoria.setCodigoCategoria(rs.getInt("codigo_categoria"));
-                listaCategoria.setNombre(rs.getString("nombre"));
+                listaMarca.setCodigoMarca(rs.getInt("id_marca"));
+                listaMarca.setMarca(rs.getString("nombre_marca"));
 
             }
             this.conexion.cerrarConexiones();
         } catch (SQLException ex) {
             System.out.println("falló insertar" + ex.getErrorCode());
         }
-        return listaCategoria;
+        return listaMarca;
     }
 
     //Actualizar
-    public String update(Categoria categoria) throws SQLException {
+    public String update(Marca marca) throws SQLException {
         String resultado;
         int resultado_update;
 
         try {
             this.accesoDB = this.conexion.getConexion();
             this.ps = this.accesoDB.prepareStatement(ACTUALIZAR);
-            ps.setString(1, categoria.getNombre());
-            ps.setInt(2, categoria.getCodigoCategoria());
+            ps.setString(1, marca.getMarca());
+            ps.setInt(2, marca.getCodigoMarca());
             resultado_update = this.ps.executeUpdate();
 
             if (resultado_update > 0) {
@@ -133,12 +133,12 @@ public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLEx
         return resultado;
     }
 
-    public boolean delete(Categoria categoria) throws SQLException {
+    public boolean delete(Marca marca) throws SQLException {
 
         try {
             accesoDB = conexion.getConexion();
             ps = accesoDB.prepareStatement(DELETE);
-            ps.setInt(1, categoria.getCodigoCategoria());
+            ps.setInt(1, marca.getCodigoMarca());
 
             ps.executeUpdate();
             return true;
@@ -183,29 +183,23 @@ public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLEx
     return false;
 }
     
+    ///PARA COMBO MARCA
+     private ArrayList<Marca> listProveedor;
+     private ArrayList<Marca> listarCombo;
     
-    ////Combo de categoria
-    
-    
-    private ArrayList<Categoria> listProveedor;
-     private ArrayList<Categoria> listarCombo;
-    
-    
-     private static final String CARGAR_COMBO_CATEGORIA = "SELECT a.codigo_categoria, a.nombre\n" +
-" FROM categoria a";
-
-    public ArrayList<Categoria> cargarComboProveedor() throws SQLException {
+     private static final String CARGAR_COMBO_MARCA = "SELECT id_marca, nombre_marca FROM marca;";
+    public ArrayList<Marca> cargarComboMarca() throws SQLException {
         listarCombo = new ArrayList();
  System.out.println("ENTRO AL METODO DAO MOSTRAR");
         try {
             this.accesoDB = this.conexion.getConexion();
-            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_CATEGORIA);
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_MARCA);
             this.rs = this.ps.executeQuery();
-            Categoria c = null;
+            Marca c = null;
             while (this.rs.next()) {
-                c = new Categoria();
-                c.setCodigoCategoria(rs.getInt("codigo_categoria"));
-                c.setNombre(rs.getString("nombre"));
+                c = new Marca();
+                c.setCodigoMarca(rs.getInt("id_marca"));
+                c.setMarca(rs.getString("nombre_marca"));
                 listarCombo.add(c);
             }
             conexion.cerrarConexiones();
@@ -215,5 +209,6 @@ public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLEx
 
         return listarCombo;
     }
+    
     
 }

@@ -148,16 +148,7 @@ JSONObject jsonObjet = new JSONObject(); // ← única declaración aqu
                 response.getWriter().write(jsonArray.toString());
                 break;
             
-                
-                
-                
-                
-                
-                
-                
-                
-                
-        
+
             }
             case "cargarDatos":
                 JSONArray array_cargar = new JSONArray();
