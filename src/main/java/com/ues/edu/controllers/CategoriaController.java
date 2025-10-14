@@ -20,13 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- *
- * @author Erick
- */
+
 @WebServlet(name = "CategoriaController", urlPatterns = {"/CategoriaController"})
 public class CategoriaController extends HttpServlet {
-
+//cambios de prueba
     private ArrayList<Categoria> listaCategoriasActividad;
     private ArrayList<Categoria> listaCategoriasActividad2;
 
@@ -40,7 +37,6 @@ public class CategoriaController extends HttpServlet {
             throws ServletException, IOException {
         doPost(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -226,5 +222,5 @@ JSONObject jsonObjet = new JSONObject(); // ← única declaración aqu
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+//ikkj
 }

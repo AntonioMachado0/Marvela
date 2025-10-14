@@ -15,6 +15,21 @@ main {
   padding: 0;
 }
 
+#nombre_codigo {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 auto;
+}
+
+#barcode {
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
 .logo-panel {
   text-align: left;
   margin-left: 25%;
@@ -24,6 +39,37 @@ main {
   max-width: 220px;
   height: auto;
 }
+
+table th,
+            table td {
+                padding: 8px;
+                font-size: 14px;
+            }
+            table {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: collapse;
+            }
+
+            table th,
+            table td {
+                padding: 14px;
+                font-size: 15px;
+                word-wrap: break-word;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+
+            table thead {
+                background-color: #328266;
+            }
+
+            table thead th {
+                color: #fff;
+                font-weight: 600;
+            }
+            
+            
 
 
 /* Barra superior mejorada */

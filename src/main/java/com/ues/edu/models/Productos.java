@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ues.edu.models;
-
+import java.io.InputStream;
 import java.sql.Date;
 
 /**
@@ -13,37 +13,50 @@ import java.sql.Date;
 public class Productos {
     private int idProducto;
     private String codigoProducto;
+     private String nombre;
     private String descripcion;
-    private String unidadMedida;
-    private String marca;
+ private byte[]  imagen;
+    private Double PrecioVenta;
+    private Medida medida;
+    private Marca marca;
     private Date fechaVencimiento;
     private Categoria categoria;
+    
     private float porcentaje;
+
+    public Productos(int idProducto, String codigoProducto, String nombre, String descripcion, byte[] imagen, Double PrecioVenta, Medida medida, Marca marca, Date fechaVencimiento, Categoria categoria, float porcentaje) {
+        this.idProducto = idProducto;
+        this.codigoProducto = codigoProducto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.PrecioVenta = PrecioVenta;
+        this.medida = medida;
+        this.marca = marca;
+        this.fechaVencimiento = fechaVencimiento;
+        this.categoria = categoria;
+        this.porcentaje = porcentaje;
+    }
 
     public Productos() {
     }
 
-    public Productos(int idProducto, String codigoProducto, String descripcion, String unidadMedida, String marca, Date fechaVencimiento, Categoria categoria, float porcentaje) {
-        this.idProducto = idProducto;
-        this.codigoProducto = codigoProducto;
-        this.descripcion = descripcion;
-        this.unidadMedida = unidadMedida;
-        this.marca = marca;
-        this.fechaVencimiento = fechaVencimiento;
-        this.categoria = categoria;
-        this.porcentaje = porcentaje;
+    public Double getPrecioVenta() {
+        return PrecioVenta;
     }
 
-    public Productos(String codigoProducto, String descripcion, String unidadMedida, String marca, Date fechaVencimiento, Categoria categoria, float porcentaje) {
-        this.codigoProducto = codigoProducto;
-        this.descripcion = descripcion;
-        this.unidadMedida = unidadMedida;
-        this.marca = marca;
-        this.fechaVencimiento = fechaVencimiento;
-        this.categoria = categoria;
-        this.porcentaje = porcentaje;
+    public void setPrecioVenta(Double PrecioVenta) {
+        this.PrecioVenta = PrecioVenta;
     }
 
+   
+
+    
+
+    public byte[] getImagen() { return imagen; }
+public void setImagen(byte[] imagen) { this.imagen = imagen; }
+
+    
     public int getIdProducto() {
         return idProducto;
     }
@@ -67,23 +80,6 @@ public class Productos {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
-    public String getUnidadMedida() {
-        return unidadMedida;
-    }
-
-    public void setUnidadMedida(String unidadMedida) {
-        this.unidadMedida = unidadMedida;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
     public Date getFechaVencimiento() {
         return fechaVencimiento;
     }
@@ -106,6 +102,34 @@ public class Productos {
 
     public void setPorcentaje(float porcentaje) {
         this.porcentaje = porcentaje;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
+
+    
+    
+    public Medida getMedida() {
+        return medida;
+    }
+
+    public void setMedida(Medida medida) {
+        this.medida = medida;
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Marca marca) {
+        this.marca = marca;
     }
 
     

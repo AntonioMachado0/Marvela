@@ -18,6 +18,7 @@ import java.sql.Statement;
  */
 public class Conexion {
 
+   //Machado
     private Connection conexion = null;
     private static final ResultSet rs = null;
     private static Statement sentencia = null;
@@ -27,14 +28,31 @@ public class Conexion {
     private static final String jdbcUsername = "postgres";
     private static final String jdbcPassword = "root";
 
+    // Método original (no estático)
     public Connection getConexion() {
         Connection con = null;
         try {
             Class.forName("org.postgresql.Driver");
-            // Obtener la conexion
+            // Obtener la 
             con = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (SQLException ex) {
         } catch (Exception e) {
+        }
+        return con;
+    }
+
+    // ✅ Método adicional para uso estático
+    public static Connection getConexionStatic() {
+        Connection con = null;
+        try {
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        } catch (SQLException ex) {
+            System.out.println("Error SQL al conectar: " + ex.getMessage());
+            ex.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error general al conectar: " + e.getMessage());
+            e.printStackTrace();
         }
         return con;
     }
@@ -60,6 +78,18 @@ public class Conexion {
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexion a la bd" + e);
             }
+        }
+    }
+
+    // ✅ Método adicional para cerrar conexiones desde DAOs
+    public static void cerrarConexiones(Connection con, PreparedStatement ps, ResultSet rs) {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar recursos: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

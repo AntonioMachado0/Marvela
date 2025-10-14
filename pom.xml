@@ -23,7 +23,11 @@
         </dependency>
         
        
-       
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
         
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -50,11 +54,13 @@
             <version>20240303</version>
         </dependency>
         
+        
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.2</version>
-        </dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.2</version>
+    <scope>compile</scope>
+</dependency>
         
         <dependency>
             <groupId>org.mindrot</groupId>
@@ -79,14 +85,16 @@
                     </compilerArguments>
                 </configuration>
             </plugin>
+           
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.3.2</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+        </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
