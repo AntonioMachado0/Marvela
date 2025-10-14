@@ -1,8 +1,14 @@
+<%-- 
+    Document   : Unidad_Medida_crud
+    Created on : 27 sept 2025, 21:07:24
+    Author     : thebe
+--%>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-        <title>Marvela | Datos del Proveedor</title>
+        <title>Marvela | Unidad de Medida</title>
         <link rel="stylesheet" href="estilos.css">
         <link rel="stylesheet" href="categoria.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -16,9 +22,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
-
 <body>
   <aside class="sidebar activo" id="sidebar">
   <div class="menu-header" id="colapsarMenu">
@@ -70,33 +74,30 @@
         <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
         <!-- Modal: Nuevo Producto -->
-
-        <!-- Modal: Nuevo Producto -->
-
         <div class="modal fade" id="myModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
 
                         <h5 class="modal-title text-white" id="nuevoProductoLabel">
-                            <i class="fas fa-user-plus me-2"></i>NUEVA CATEGORIA
+                            <i class="fas fa-user-plus me-2"></i>NUEVA MEDIDA
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <form id="formulario_insert" data-parsley-validate >
                         <div class="modal-body">
-                            <label for="nombre">Nombre Categoría<span class="text-danger">*</span></label></label>
+                            <label for="nombre">Nombre Medida<span class="text-danger">*</span></label></label>
                             <div class="form-floating mb-3 position-relative">
                                 <input type="text" class="form-control" id="nombre" name="nombre"
                                        placeholder="Ej. Distribuidora El Sol"
                                        maxlength="100"
-                                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ.\s]{4,100}$"
+                                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ.\s]{1,100}$"
                                        required
                                        oninvalid="this.setCustomValidity('Ingrese solo letras y espacios, entre 4 y 100 caracteres.')"
                                        oninput="this.setCustomValidity('')">
-                                <label for="nombre_proveedor">Nombre de categoría</label>
+                               
                                 <div class="invalid-feedback">
-                                    Ingrese solo letras y espacios, entre 4 y 100 caracteres.
+                                    Ingrese solo letras y espacios, entre 1 y 100 caracteres.
                                 </div>
                             </div>
                             <script>
@@ -106,9 +107,39 @@
                                     const valor = this.value;
                                     const valorSinEspacios = valor.replace(/\s/g, "");
 
-                                    if (valorSinEspacios.length < 3) {
+                                    if (valorSinEspacios.length < 1) {
                                         this.classList.add("is-invalid");
-                                        this.setCustomValidity("Debe ingresar al menos 3 caracteres reales (sin contar espacios).");
+                                        this.setCustomValidity("Debe ingresar al menos 1 caracteres reales (sin contar espacios).");
+                                    } else {
+                                        this.classList.remove("is-invalid");
+                                        this.setCustomValidity("");
+                                    }
+                                });
+                            </script>
+                             <label for="abreviacion">abreviacion<span class="text-danger">*</span></label></label>
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="text" class="form-control" id="abreviacion" name="abreviacion"
+                                       placeholder="Ej. Distribuidora El Sol"
+                                       maxlength="100"
+                                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ.\s]{1,100}$"
+                                       required
+                                       oninvalid="this.setCustomValidity('Ingrese solo letras y espacios, entre 1 y 100 caracteres.')"
+                                       oninput="this.setCustomValidity('')">
+                               
+                                <div class="invalid-feedback">
+                                    Ingrese solo letras y espacios, entre 1 y 100 caracteres.
+                                </div>
+                            </div>
+                            <script>
+                                const campoAbreviacion = document.getElementById("abreviacion");
+
+                                campoAbreviacion.addEventListener("input", function () {
+                                    const valor = this.value;
+                                    const valorSinEspacios = valor.replace(/\s/g, "");
+
+                                    if (valorSinEspacios.length < 1) {
+                                        this.classList.add("is-invalid");
+                                        this.setCustomValidity("Debe ingresar al menos 1 caracteres reales (sin contar espacios).");
                                     } else {
                                         this.classList.remove("is-invalid");
                                         this.setCustomValidity("");
@@ -140,30 +171,76 @@
                 <div class="modal-content shadow-lg">
 
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title">EDITAR CATEGORÍA</h5>
+                        <h5 class="modal-title">EDITAR MEDIDA</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>                  
                     <form name="formulario_editar" id="formulario_editar">
                         <div style="background: #eeeeef" class="modal-body">
                             <div class="form-floating mb-3" style="display: none;">
-                                <input style="background: #eeeeef" type="text" class="form-control" name="codigo_categoria" id="codigo_categoria" readonly>
+                                <input style="background: #eeeeef" type="text" class="form-control" name="id_medida" id="id_medida" readonly>
                                 <label for="floatingInput">ID</label>
                             </div>
 
 
                             <div class="form-floating mb-3 position-relative">
-                                <input type="text" class="form-control" id="categoriaE" name="categoriaE"
+                                <input type="text" class="form-control" id="categoriaE" name="nombre_medida"
                                        placeholder="Ej. Distribuidora El Sol"
                                        maxlength="100"
-                                       pattern="^(?!\s*$)[A-Za-zÁÉÍÓÚáéíóúÑñ. ]{4,100}$"
+                                       pattern="^(?!\s*$)[A-Za-zÁÉÍÓÚáéíóúÑñ. ]{1,100}$"
                                        required
                                        oninvalid="this.setCustomValidity('Ingrese solo letras y espacios, entre 4 y 100 caracteres.')"
                                        oninput="this.setCustomValidity('')">
-                                <label for="nombre_proveedor">Nombre de categoría</label>
+                                <label for="nombre_medida">Nombre de Marca</label>
                                 <div class="invalid-feedback">
-                                    Ingrese solo letras y espacios, entre 4 y 100 caracteres.
+                                    Ingrese solo letras y espacios, entre 2 y 100 caracteres.
                                 </div>
                             </div>
+                            <script>
+                                const campoNombre = document.getElementById("nombre_medida");
+
+                                campoNombre.addEventListener("input", function () {
+                                    const valor = this.value;
+                                    const valorSinEspacios = valor.replace(/\s/g, "");
+
+                                    if (valorSinEspacios.length < 1) {
+                                        this.classList.add("is-invalid");
+                                        this.setCustomValidity("Debe ingresar al menos 1 caracteres reales (sin contar espacios).");
+                                    } else {
+                                        this.classList.remove("is-invalid");
+                                        this.setCustomValidity("");
+                                    }
+                                });
+                            </script>
+                            
+                            <div class="form-floating mb-3 position-relative">
+                                <input type="text" class="form-control" id="categoriaA" name="abreviacion"
+                                       placeholder="Ej. Distribuidora El Sol"
+                                       maxlength="100"
+                                       pattern="^(?!\s*$)[A-Za-zÁÉÍÓÚáéíóúÑñ. ]{1,100}$"
+                                       required
+                                       oninvalid="this.setCustomValidity('Ingrese solo letras y espacios, entre 1 y 100 caracteres.')"
+                                       oninput="this.setCustomValidity('')">
+                                <label for="abreviacion">abreviacion</label>
+                                <div class="invalid-feedback">
+                                    Ingrese solo letras y espacios, entre 1 y 100 caracteres.
+                                </div>
+                            </div>
+                            <script>
+                                const campoAbreviacion = document.getElementById("abreviacion");
+
+                                campoAbreviacion.addEventListener("input", function () {
+                                    const valor = this.value;
+                                    const valorSinEspacios = valor.replace(/\s/g, "");
+
+                                    if (valorSinEspacios.length < 1) {
+                                        this.classList.add("is-invalid");
+                                        this.setCustomValidity("Debe ingresar al menos 1 caracteres reales (sin contar espacios).");
+                                    } else {
+                                        this.classList.remove("is-invalid");
+                                        this.setCustomValidity("");
+                                    }
+                                });
+                            </script>
                         </div>
                         <div style="background: #eeeeef" class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -174,8 +251,8 @@
             </div>
         </div>
         <section class="table-responsive">
-            <h2 style="text-align: center;">CATEGORIAS</h2>
-            <div id="categoriaA" class="table-responsive">   
+            <h2 style="text-align: center;">MEDIDA</h2>
+            <div id="nombre_medida" class="table-responsive">   
             </div>
         </section>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -195,7 +272,7 @@
 
         </script>
         <%@include file="footer.jsp" %>
-        <script src="js/categoria.js"></script>
+        <script src="js/medida.js"></script>
     
   </main>
   <script>
