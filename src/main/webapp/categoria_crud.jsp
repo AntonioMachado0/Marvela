@@ -31,6 +31,8 @@
     <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
     <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
     <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
+    <a href="Unidad_Medida_crud.jsp"><i class="fas fa-user-shield"></i> <span>Unidad de Medida</span></a>
+    <a href="marca_crud.jsp"><i class="fas fa-user-shield"></i> <span>Marca</span></a>
   </nav>
 </aside>
 

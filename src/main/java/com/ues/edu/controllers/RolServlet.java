@@ -29,7 +29,7 @@ import org.json.JSONObject;
  */
 @WebServlet(name = "RolServlet", urlPatterns = {"/RolServlet"})
 public class RolServlet extends HttpServlet {
-
+//cambii
     private ArrayList<Roles> lista;
 
     /**

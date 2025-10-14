@@ -1,3 +1,4 @@
+
 package com.ues.edu.controllers;
 
 import com.ues.edu.models.Categoria;
@@ -20,10 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-/**
- *
- * @author Erick
- */
+
 @WebServlet(name = "CategoriaController", urlPatterns = {"/CategoriaController"})
 public class CategoriaController extends HttpServlet {
 
@@ -219,3 +217,4 @@ JSONObject jsonObjet = new JSONObject(); // ← única declaración aqu
     }// </editor-fold>
 //ikkj
 }
+
