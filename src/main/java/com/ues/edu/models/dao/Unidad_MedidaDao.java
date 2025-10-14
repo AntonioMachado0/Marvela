@@ -1,11 +1,16 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ues.edu.models.dao;
 
+/**
+ *
+ * @author Maris
+ */
+
 import com.ues.edu.connection.Conexion;
-import com.ues.edu.models.Marca;
 import com.ues.edu.models.Medida;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -81,7 +86,7 @@ rg.setAbreviacion(rs.getString("abreviacion"));
             if (resultado_insertar > 0) {
                 resultado = "exito";
             } else {
-                resultado = "error_insertar_medida";
+                resultado = "error_insertar_categoria";
             }
         } catch (SQLException e) {
             resultado = "error_exepcion";
@@ -89,34 +94,6 @@ rg.setAbreviacion(rs.getString("abreviacion"));
         }
         return resultado;
     }
-    
-    public boolean existeMedida(String nombre, String abreviacion) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM unidad_medida WHERE LOWER(nombre_medida) = LOWER(?) OR LOWER(abreviacion) = LOWER(?)";
-    try (Connection conn = conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, nombre.trim());
-        ps.setString(2, abreviacion.trim());
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
-        }
-    }
-    return false;
-}
-    public boolean existeMedidaConOtroId(String nombre, String abreviacion, int idActual) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM unidad_medida WHERE (LOWER(nombre_medida) = LOWER(?) OR LOWER(abreviacion) = LOWER(?)) AND id_medida != ?";
-    try (Connection conn = conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, nombre.trim());
-        ps.setString(2, abreviacion.trim());
-        ps.setInt(3, idActual);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
-        }
-    }
-    return false;
-}
 
     //cargar datos 
     public Medida cargarDatos(Medida medida) throws SQLException {
@@ -183,37 +160,69 @@ listaMedida.setAbreviacion(rs.getString("abreviacion"));
     }
     
      
-//    public boolean existeNombreCategoria(String nombre) throws SQLException {
-//    String sql = "SELECT COUNT(*) FROM categoria WHERE LOWER(nombre) = LOWER(?)";
-//    
-//    try (Connection connection = conexion.getConexion();
-//         PreparedStatement ps = connection.prepareStatement(sql)) {
-//        
-//        ps.setString(1, nombre);
-//        try (ResultSet rs = ps.executeQuery()) {
-//            if (rs.next()) {
-//                return rs.getInt(1) > 0;
-//            }
-//        }
-//    }
-//    return false;
-//}
+    public boolean existeNombreCategoria(String nombre) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM categoria WHERE LOWER(nombre) = LOWER(?)";
     
-//    public boolean existeNombreEx(String nombre, int codigo_categoria) throws SQLException {
-//    String sql = "SELECT COUNT(*) FROM categoria WHERE LOWER(nombre) = LOWER(?) AND codigo_categoria != ?";
-//    
-//    try (Connection connection = conexion.getConexion();
-//         PreparedStatement ps = connection.prepareStatement(sql)) {
-//        
-//        ps.setString(1, nombre);
-//        ps.setInt(2, codigo_categoria);
-//        
-//        try (ResultSet rs = ps.executeQuery()) {
-//            if (rs.next()) {
-//                return rs.getInt(1) > 0;
-//            }
-//        }
-//    }
-//    return false;
-//}
+    try (Connection connection = conexion.getConexion();
+         PreparedStatement ps = connection.prepareStatement(sql)) {
+        
+        ps.setString(1, nombre);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
 }
+    
+    public boolean existeNombreEx(String nombre, int codigo_categoria) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM categoria WHERE LOWER(nombre) = LOWER(?) AND codigo_categoria != ?";
+    
+    try (Connection connection = conexion.getConexion();
+         PreparedStatement ps = connection.prepareStatement(sql)) {
+        
+        ps.setString(1, nombre);
+        ps.setInt(2, codigo_categoria);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+    }
+    return false;
+}
+    
+    
+    
+    
+    
+       ///PARA COMBO MARCA
+     private ArrayList<Medida> listProveedor;
+     private ArrayList<Medida> listarCombo;
+    
+     private static final String CARGAR_COMBO_MEDIDA = "  SELECT a.id_medida, a.nombre_medida\n" +
+"  FROM unidad_medida a";
+    public ArrayList<Medida> cargarComboMedida() throws SQLException {
+        listarCombo = new ArrayList();
+ System.out.println("ENTRO AL METODO DAO MOSTRAR");
+        try {
+            this.accesoDB = this.conexion.getConexion();
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_MEDIDA);
+            this.rs = this.ps.executeQuery();
+            Medida c = null;
+            while (this.rs.next()) {
+                c = new Medida();
+                c.setId_medida(rs.getInt("id_medida"));
+                c.setMedida(rs.getString("nombre_medida"));
+                listarCombo.add(c);
+            }
+            conexion.cerrarConexiones();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return listarCombo;
+    }
+    

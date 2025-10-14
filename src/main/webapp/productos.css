@@ -1,0 +1,53 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 1 oct. 2025, 23:54:27
+    Author     : Maris
+*/
+
+.tabla-productos {
+                padding: 30px;
+            }
+
+            table {
+                width: 100%;
+                table-layout: fixed;
+                border-collapse: collapse;
+            }
+
+            table th,
+            table td {
+                padding: 14px;
+                font-size: 15px;
+                word-wrap: break-word;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+
+            table thead {
+                background-color: #328266;
+            }
+
+            table thead th {
+                color: #fff;
+                font-weight: 600;
+            }
+
+            .codigo-svg {
+                display: block;
+                margin: 0 auto;
+                width: 100%;
+                max-width: 160px;
+                height: auto;
+            }
+
+            .buscador {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                font-size: 15px;
+            }

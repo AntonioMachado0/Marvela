@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.ues.edu.models;
+
 import java.io.InputStream;
 import java.sql.Date;
 
@@ -16,7 +14,7 @@ public class Productos {
      private String nombre;
     private String descripcion;
  private byte[]  imagen;
-    private Double PrecioVenta;
+    
     private Medida medida;
     private Marca marca;
     private Date fechaVencimiento;
@@ -24,13 +22,15 @@ public class Productos {
     
     private float porcentaje;
 
-    public Productos(int idProducto, String codigoProducto, String nombre, String descripcion, byte[] imagen, Double PrecioVenta, Medida medida, Marca marca, Date fechaVencimiento, Categoria categoria, float porcentaje) {
+    public Productos() {
+    }
+
+    public Productos(int idProducto, String codigoProducto, String nombre, String descripcion, byte[] imagen, Medida medida, Marca marca, Date fechaVencimiento, Categoria categoria, float porcentaje) {
         this.idProducto = idProducto;
         this.codigoProducto = codigoProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
-        this.PrecioVenta = PrecioVenta;
         this.medida = medida;
         this.marca = marca;
         this.fechaVencimiento = fechaVencimiento;
@@ -38,20 +38,17 @@ public class Productos {
         this.porcentaje = porcentaje;
     }
 
-    public Productos() {
+    public Productos(String codigoProducto, String nombre, String descripcion, byte[] imagen, Medida medida, Marca marca, Date fechaVencimiento, Categoria categoria, float porcentaje) {
+        this.codigoProducto = codigoProducto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.medida = medida;
+        this.marca = marca;
+        this.fechaVencimiento = fechaVencimiento;
+        this.categoria = categoria;
+        this.porcentaje = porcentaje;
     }
-
-    public Double getPrecioVenta() {
-        return PrecioVenta;
-    }
-
-    public void setPrecioVenta(Double PrecioVenta) {
-        this.PrecioVenta = PrecioVenta;
-    }
-
-   
-
-    
 
     public byte[] getImagen() { return imagen; }
 public void setImagen(byte[] imagen) { this.imagen = imagen; }
@@ -133,4 +130,3 @@ public void setImagen(byte[] imagen) { this.imagen = imagen; }
     }
 
     
-}

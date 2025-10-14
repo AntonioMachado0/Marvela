@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -15,7 +16,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author thebe
+ * @author Maris
  */
 public class MarcaDao {
     
@@ -63,28 +64,6 @@ public ArrayList<Marca> selectALL(Integer estado, String quien) throws SQLExcept
         }
         return listMarca;
     }
-public boolean existeMarca(String nombreMarca) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM marca WHERE LOWER(nombre_marca) = LOWER(?)";
-    try (Connection conn = conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-        ps.setString(1, nombreMarca.trim());
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            int count = rs.getInt(1);
-            System.out.println("Cantidad de coincidencias: " + count);
-            return count > 0;
-        } else {
-            System.out.println("No se obtuvo resultado del ResultSet.");
-            return false;
-        }
-
-    } catch (SQLException e) {
-        System.out.println("Error en existeMarca: " + e.getMessage());
-        throw e;
-    }
-}
     
     //insertar
     public String insert(Marca marca) throws SQLException {
@@ -101,7 +80,7 @@ public boolean existeMarca(String nombreMarca) throws SQLException {
             if (resultado_insertar > 0) {
                 resultado = "exito";
             } else {
-                resultado = "error_insertar_marca";
+                resultado = "error_insertar_categoria";
             }
         } catch (SQLException e) {
             resultado = "error_exepcion";
@@ -130,19 +109,7 @@ public boolean existeMarca(String nombreMarca) throws SQLException {
         }
         return listaMarca;
     }
-public boolean existeMarcaConOtroId(String nombreMarca, int idActual) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM marca WHERE LOWER(nombre_marca) = LOWER(?) AND id_marca != ?";
-    try (Connection conn = conexion.getConexion();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, nombreMarca.trim());
-        ps.setInt(2, idActual);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
-        }
-    }
-    return false;
-}
+
     //Actualizar
     public String update(Marca marca) throws SQLException {
         String resultado;
@@ -216,4 +183,32 @@ public boolean existeMarcaConOtroId(String nombreMarca, int idActual) throws SQL
     }
     return false;
 }
-}
+    
+    ///PARA COMBO MARCA
+     private ArrayList<Marca> listProveedor;
+     private ArrayList<Marca> listarCombo;
+    
+     private static final String CARGAR_COMBO_MARCA = "SELECT id_marca, nombre_marca FROM marca;";
+    public ArrayList<Marca> cargarComboMarca() throws SQLException {
+        listarCombo = new ArrayList();
+ System.out.println("ENTRO AL METODO DAO MOSTRAR");
+        try {
+            this.accesoDB = this.conexion.getConexion();
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_MARCA);
+            this.rs = this.ps.executeQuery();
+            Marca c = null;
+            while (this.rs.next()) {
+                c = new Marca();
+                c.setCodigoMarca(rs.getInt("id_marca"));
+                c.setMarca(rs.getString("nombre_marca"));
+                listarCombo.add(c);
+            }
+            conexion.cerrarConexiones();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return listarCombo;
+    }
+    
+    

@@ -182,4 +182,38 @@ public ArrayList<Categoria> selectALL(Integer estado, String quien) throws SQLEx
     }
     return false;
 }
+    
+    
+    ////Combo de categoria
+    
+    
+    private ArrayList<Categoria> listProveedor;
+     private ArrayList<Categoria> listarCombo;
+    
+    
+     private static final String CARGAR_COMBO_CATEGORIA = "SELECT a.codigo_categoria, a.nombre\n" +
+" FROM categoria a";
+
+    public ArrayList<Categoria> cargarComboProveedor() throws SQLException {
+        listarCombo = new ArrayList();
+ System.out.println("ENTRO AL METODO DAO MOSTRAR");
+        try {
+            this.accesoDB = this.conexion.getConexion();
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_CATEGORIA);
+            this.rs = this.ps.executeQuery();
+            Categoria c = null;
+            while (this.rs.next()) {
+                c = new Categoria();
+                c.setCodigoCategoria(rs.getInt("codigo_categoria"));
+                c.setNombre(rs.getString("nombre"));
+                listarCombo.add(c);
+            }
+            conexion.cerrarConexiones();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return listarCombo;
+    }
+    
 }

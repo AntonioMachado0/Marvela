@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.ues.edu.models;
 
 /**
  *
- * @author thebe
+ * @author Maris
  */
 public class Medida {
     int id_medida;
@@ -46,17 +43,4 @@ public class Medida {
 
     public void setAbreviacion(String abreviacion) {
         this.abreviacion = abreviacion;
-    }
-
-   
-
-   
-
-   
-
-    
-    
-    
-    
-    
-}
+    }}

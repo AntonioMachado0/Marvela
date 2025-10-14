@@ -1,3 +1,4 @@
+
 package com.ues.edu.controllers;
 
 import com.ues.edu.models.Categoria;
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 
 @WebServlet(name = "CategoriaController", urlPatterns = {"/CategoriaController"})
 public class CategoriaController extends HttpServlet {
-//cambios de prueba
+
     private ArrayList<Categoria> listaCategoriasActividad;
     private ArrayList<Categoria> listaCategoriasActividad2;
 
@@ -37,6 +38,7 @@ public class CategoriaController extends HttpServlet {
             throws ServletException, IOException {
         doPost(request, response);
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -144,16 +146,7 @@ JSONObject jsonObjet = new JSONObject(); // ← única declaración aqu
                 response.getWriter().write(jsonArray.toString());
                 break;
             
-                
-                
-                
-                
-                
-                
-                
-                
-                
-        
+
             }
             case "cargarDatos":
                 JSONArray array_cargar = new JSONArray();
@@ -224,3 +217,4 @@ JSONObject jsonObjet = new JSONObject(); // ← única declaración aqu
     }// </editor-fold>
 //ikkj
 }
+

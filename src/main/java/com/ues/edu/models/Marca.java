@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -6,7 +7,7 @@ package com.ues.edu.models;
 
 /**
  *
- * @author thebe
+ * @author Maris
  */
 public class Marca {
      int codigoMarca;
@@ -17,14 +18,15 @@ public class Marca {
         this.Marca = Marca;
     }
 
-    public Marca() {
-    }
-
     public Marca(String Marca) {
         this.Marca = Marca;
     }
 
-   
+    
+    
+    public Marca() {
+    }
+
     public int getCodigoMarca() {
         return codigoMarca;
     }
