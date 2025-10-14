@@ -15,25 +15,35 @@ public class DetalleCompra {
     private Compras compra;
     private int cantidad;
     private Productos productos;
+    private float precioVentaUnitario;
+    private float totalVenta;
+
 
     public DetalleCompra() {
     }
 
-    public DetalleCompra(int codigoDetalleCompra, float precioCompra, Compras compra, int cantidad, Productos productos) {
+    public DetalleCompra(int codigoDetalleCompra, float precioCompra, Compras compra, int cantidad, Productos productos, float precioVentaUnitario, float totalVenta) {
         this.codigoDetalleCompra = codigoDetalleCompra;
         this.precioCompra = precioCompra;
         this.compra = compra;
         this.cantidad = cantidad;
         this.productos = productos;
+        this.precioVentaUnitario = precioVentaUnitario;
+        this.totalVenta = totalVenta;
     }
 
-    public DetalleCompra(float precioCompra, Compras compra, int cantidad, Productos productos) {
+    public DetalleCompra(float precioCompra, Compras compra, int cantidad, Productos productos, float precioVentaUnitario, float totalVenta) {
         this.precioCompra = precioCompra;
         this.compra = compra;
         this.cantidad = cantidad;
         this.productos = productos;
+        this.precioVentaUnitario = precioVentaUnitario;
+        this.totalVenta = totalVenta;
     }
 
+   
+
+ 
     public int getCodigoDetalleCompra() {
         return codigoDetalleCompra;
     }
@@ -62,6 +72,23 @@ public class DetalleCompra {
         return cantidad;
     }
 
+    public float getPrecioVentaUnitario() {
+        return precioVentaUnitario;
+    }
+
+    public void setPrecioVentaUnitario(float precioVentaUnitario) {
+        this.precioVentaUnitario = precioVentaUnitario;
+    }
+
+    public float getTotalVenta() {
+        return totalVenta;
+    }
+
+    public void setTotalVenta(float totalVenta) {
+        this.totalVenta = totalVenta;
+    }
+    
+
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
@@ -78,3 +105,4 @@ public class DetalleCompra {
     
     
 }
+

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-        <title>Marvela | Datos del Proveedor</title>
+        <title>Marvela | Datos del Marca</title>
         <link rel="stylesheet" href="estilos.css">
         <link rel="stylesheet" href="categoria.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -16,9 +16,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
-
 <body>
   <aside class="sidebar activo" id="sidebar">
   <div class="menu-header" id="colapsarMenu">
@@ -31,8 +29,8 @@
     <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
     <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
     <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
-    <a href="Unidad_Medida_crud.jsp"><i class="fas fa-user-shield"></i> <span>Unidad de Medida</span></a>
-    <a href="marca_crud.jsp"><i class="fas fa-user-shield"></i> <span>Marca</span></a>
+    <a href="Unidad_Medida_crud.jsp"><i class="fas fa-ruler-combined"></i> <span>Unidad de Medida</span></a>
+<a href="marca_crud.jsp"><i class="fas fa-certificate"></i> <span>Marca</span></a>
   </nav>
 </aside>
 
@@ -69,97 +67,93 @@
        <!-- Agrega este script en tu <head> o antes del cierre de </body> -->
         <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
-        <!-- Modal: Nuevo Producto -->
-
-        <!-- Modal: Nuevo Producto -->
-
-        <div class="modal fade" id="myModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-success text-white">
-
-                        <h5 class="modal-title text-white" id="nuevoProductoLabel">
-                            <i class="fas fa-user-plus me-2"></i>NUEVA CATEGORIA
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <form id="formulario_insert" data-parsley-validate >
-                        <div class="modal-body">
-                            <label for="nombre">Nombre Categoría<span class="text-danger">*</span></label></label>
-                            <div class="form-floating mb-3 position-relative">
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                       placeholder="Ej. Distribuidora El Sol"
-                                       maxlength="100"
-                                       pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ.\s]{4,100}$"
-                                       required
-                                       oninvalid="this.setCustomValidity('Ingrese solo letras y espacios, entre 4 y 100 caracteres.')"
-                                       oninput="this.setCustomValidity('')">
-                                <label for="nombre_proveedor">Nombre de categoría</label>
-                                <div class="invalid-feedback">
-                                    Ingrese solo letras y espacios, entre 4 y 100 caracteres.
-                                </div>
-                            </div>
-                            <script>
-                                const campoNombre = document.getElementById("nombre");
-
-                                campoNombre.addEventListener("input", function () {
-                                    const valor = this.value;
-                                    const valorSinEspacios = valor.replace(/\s/g, "");
-
-                                    if (valorSinEspacios.length < 3) {
-                                        this.classList.add("is-invalid");
-                                        this.setCustomValidity("Debe ingresar al menos 3 caracteres reales (sin contar espacios).");
-                                    } else {
-                                        this.classList.remove("is-invalid");
-                                        this.setCustomValidity("");
-                                    }
-                                });
-                            </script>
-                            <div class="required-legend alert alert-light border mt-3 mb-0">
-                                <div class="d-flex align-items-center">
-                                    <span class="text-danger me-2"><i class="fas fa-exclamation-circle"></i></span>
-                                    <small class="fw-medium">Los campos marcados con <span class="text-danger">*</span> son obligatorios</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                <i class="fas fa-times me-1"></i> Cancelar
-                            </button>
-                            <button type="submit" class="btn btn-success">
-                                <i class="fas fa-save me-1"></i> Guardar
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        
+<!-- Modal: Nueva Medida -->
+<div class="modal fade" id="myModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title text-white" id="nuevaMedidaLabel">
+                    <i class="fas fa-ruler me-2"></i>NUEVA MEDIDA
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
+            <form id="formulario_insert" data-parsley-validate>
+                <div class="modal-body">
+                    <label for="nombre">Nombre Medida<span class="text-danger">*</span></label>
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="text" class="form-control" id="nombre" name="nombre"
+                               placeholder="Ej. 1 metro"
+                               maxlength="100"
+                               pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9.\s]{2,100}$"
+                               required
+                               oninvalid="this.setCustomValidity('Ingrese solo letras, números, espacios y puntos, entre 4 y 100 caracteres.')"
+                               oninput="this.setCustomValidity('')">
+                        <label for="nombre">Nombre Medida</label>
+                        <div class="invalid-feedback">
+                            Ingrese solo letras, números, espacios y puntos, entre 4 y 100 caracteres.
+                        </div>
+                    </div>
+                    <script>
+                        const campoMedida = document.getElementById("nombre");
+                        campoMedida.addEventListener("input", function () {
+                            const valor = this.value;
+                            const valorSinEspaciosYPuntos = valor.replace(/[\s.]/g, "");
+                            if (valorSinEspaciosYPuntos.length < 2) {
+                                this.classList.add("is-invalid");
+                                this.setCustomValidity("Debe ingresar al menos 3 caracteres reales (sin contar espacios ni puntos).");
+                            } else {
+                                this.classList.remove("is-invalid");
+                                this.setCustomValidity("");
+                            }
+                        });
+                    </script>
+
+                    <div class="required-legend alert alert-light border mt-3 mb-0">
+                        <div class="d-flex align-items-center">
+                            <span class="text-danger me-2"><i class="fas fa-exclamation-circle"></i></span>
+                            <small class="fw-medium">Los campos marcados con <span class="text-danger">*</span> son obligatorios</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save me-1"></i> Guardar
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
         <!-- Modal: Editar Producto -->
         <div class="modal fade" id="myModalE" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content shadow-lg">
 
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title">EDITAR CATEGORÍA</h5>
+                        <h5 class="modal-title">EDITAR MARCA</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>                  
                     <form name="formulario_editar" id="formulario_editar">
                         <div style="background: #eeeeef" class="modal-body">
                             <div class="form-floating mb-3" style="display: none;">
-                                <input style="background: #eeeeef" type="text" class="form-control" name="codigo_categoria" id="codigo_categoria" readonly>
+                                <input style="background: #eeeeef" type="text" class="form-control" name="id_marca" id="id_marca" readonly>
                                 <label for="floatingInput">ID</label>
                             </div>
 
 
                             <div class="form-floating mb-3 position-relative">
-                                <input type="text" class="form-control" id="categoriaE" name="categoriaE"
+                                <input type="text" class="form-control" id="categoriaE" name="nombre_marca"
                                        placeholder="Ej. Distribuidora El Sol"
                                        maxlength="100"
                                        pattern="^(?!\s*$)[A-Za-zÁÉÍÓÚáéíóúÑñ. ]{4,100}$"
                                        required
                                        oninvalid="this.setCustomValidity('Ingrese solo letras y espacios, entre 4 y 100 caracteres.')"
                                        oninput="this.setCustomValidity('')">
-                                <label for="nombre_proveedor">Nombre de categoría</label>
+                                <label for="nombre_marca">Nombre de Marca</label>
                                 <div class="invalid-feedback">
                                     Ingrese solo letras y espacios, entre 4 y 100 caracteres.
                                 </div>
@@ -174,8 +168,8 @@
             </div>
         </div>
         <section class="table-responsive">
-            <h2 style="text-align: center;">CATEGORIAS</h2>
-            <div id="categoriaA" class="table-responsive">   
+            <h2 style="text-align: center;">MARCA</h2>
+            <div id="nombre_marca" class="table-responsive">   
             </div>
         </section>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -195,7 +189,7 @@
 
         </script>
         <%@include file="footer.jsp" %>
-        <script src="js/categoria.js"></script>
+        <script src="js/marca.js"></script>
     
   </main>
   <script>
