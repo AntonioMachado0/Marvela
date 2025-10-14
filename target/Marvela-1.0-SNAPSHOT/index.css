@@ -1,0 +1,31 @@
+.hero-panel {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 80px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin: 40px auto;
+  max-width: 900px;
+}
+
+.hero-panel h1 {
+  font-size: 3rem; /* más grande */
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 20px;
+}
+
+.hero-panel .lead {
+  font-size: 1.5rem; /* más grande */
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+.logo-hero {
+  max-width: 280px; /* más grande */
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo-hero:hover {
+  transform: scale(1.05);
+}
