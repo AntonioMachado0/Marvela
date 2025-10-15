@@ -14,7 +14,6 @@ public class Productos {
      private String nombre;
     private String descripcion;
  private byte[]  imagen;
-    
     private Medida medida;
     private Marca marca;
     private Date fechaVencimiento;
@@ -128,5 +127,6 @@ public void setImagen(byte[] imagen) { this.imagen = imagen; }
     public void setMarca(Marca marca) {
         this.marca = marca;
     }
+}
 
     

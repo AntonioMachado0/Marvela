@@ -3,7 +3,7 @@
     Created on : 1 oct 2025, 22:06:07
     Author     : thebe
 --%>
-
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -39,14 +39,14 @@
     <body>
         <aside class="sidebar activo" id="sidebar">
             <div class="menu-header" id="colapsarMenu">
-                <i class="fas fa-bars"></i> <span>Menú</span>
+                <i class="fas fa-bars"></i> <span>MenÃº</span>
             </div>
             <nav class="menu">
                 <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
                 <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
                 <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
                 <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
-                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
+                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>CategorÃ­a</span></a>
                 <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
             </nav>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="usuario-dropdown-menu" id="usuarioMenu">
                             <a href="#">Mi perfil</a>
-                            <a href="#">Cerrar sesión</a>
+                            <a href="#">Cerrar sesiÃ³n</a>
                         </div>
                     </div>
 
@@ -80,11 +80,14 @@
                     <button type="button" class="btn-marvela" data-bs-toggle="modal" data-bs-target="#myModal">
                         NUEVO
                     </button>
+                    <button type="button" class="btn-marvela" onclick="window.location.href = 'compras_crud.jsp'">
+                        ORDEN DE COMPRA
+                    </button>
                 </div>
 
             </header>
 
-            <div class="modal fade" id="myModal" tabindex="-1">
+                   <div class="modal fade" id="myModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header bg-success text-white">
@@ -112,12 +115,12 @@
 
                                     <div style="max-width: 150px; margin-top: 16px;">
                                         <label for="codigo_producto" style="font-size: 0.8rem; display: block; margin-bottom: 4px;">
-                                            Número de Orden
+                                            NÃºmero de Orden
                                         </label>
                                         <input type="text" class="form-control" id="codigoOrden" name="codigoOrden"
                                                placeholder="Ej: PROD-001" style="font-size: 0.85rem;">
                                         <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                            Ingrese un código válido de producto.
+                                            Ingrese un cÃ³digo vÃ¡lido de producto.
                                         </div>
                                     </div>
                                     <div class="row g-2">
@@ -125,9 +128,9 @@
 
                                         <div style="display: flex; align-items: center; gap: 16px; max-width: 680px; margin-top: 16px; flex-wrap: wrap;">
 
-                                            <!-- Campo: Código de producto -->
+                                            <!-- Campo: CÃ³digo de producto -->
                                             <div style="flex: 1 1 160px;">
-                                                <label for="codigo_producto" class="form-label" style="font-size: 0.8rem;">Código Producto <span class="text-danger">*</span></label>
+                                                <label for="codigo_producto" class="form-label" style="font-size: 0.8rem;">CÃ³digo Producto <span class="text-danger">*</span></label>
                                                 <input type="text"
                                                        class="form-control form-control-sm"
                                                        id="codigo_producto"
@@ -137,22 +140,22 @@
                                                        maxlength="13"
                                                        pattern="^[A-Z]{3}[0-9]{10}$"
                                                        data-parsley-pattern="^[A-Z]{3}[0-9]{10}$"
-                                                       data-parsley-pattern-message="Debe contener exactamente 3 letras seguidas de 10 números"
+                                                       data-parsley-pattern-message="Debe contener exactamente 3 letras seguidas de 10 nÃºmeros"
                                                        style="font-size: 0.75rem; height: 40px;"
                                                        oninput="validarCodigoProducto(this); generarCodigoBarra();" />
                                                 <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                                    Ingrese un código con 3 letras seguidas de 10 números (total 13 caracteres).
+                                                    Ingrese un cÃ³digo con 3 letras seguidas de 10 nÃºmeros (total 13 caracteres).
                                                 </div>
                                             </div>
 
-                                            <!-- Código de barras -->
+                                            <!-- CÃ³digo de barras -->
                                             <div style="flex: 0 0 160px; text-align: center;">
                                                 <svg id="barcode" style="width: 150px; height: 40px; margin: 0 auto; display: block;"></svg>
                                             </div>
 
                                             <!-- Spinner de cantidad -->
                                             <div style="flex: 0 0 80px; text-align: center;">
-                                                <label for="cantidad" style="font-size: 0.8rem;">Cantidad</label>
+                                                <label for="cantidad" style="font-size: 0.8rem;">Cantidad Cod</label>
                                                 <input type="number"
                                                        id="cantidad"
                                                        name="cantidad"
@@ -187,21 +190,21 @@
                                         <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 
                                         <script>
-    function generarCodigoBarra() {
-        const valor = document.getElementById("codigo_producto").value;
-        JsBarcode("#barcode", valor, {
-            format: "CODE128",
-            lineColor: "#000",
-            width: 1,
-            height: 40,
-            displayValue: true,
-            textMargin: 0,
-            fontSize: 12
-        });
-    }
+                                            function generarCodigoBarra() {
+                                                const valor = document.getElementById("codigo_producto").value;
+                                                JsBarcode("#barcode", valor, {
+                                                    format: "CODE128",
+                                                    lineColor: "#000",
+                                                    width: 1,
+                                                    height: 40,
+                                                    displayValue: true,
+                                                    textMargin: 0,
+                                                    fontSize: 12
+                                                });
+                                            }
 
-    // Mostrar el código al abrir
-    window.addEventListener("DOMContentLoaded", generarCodigoBarra);
+                                            // Mostrar el cÃ³digo al abrir
+                                            window.addEventListener("DOMContentLoaded", generarCodigoBarra);
                                         </script>
 
                                     </div>
@@ -214,7 +217,7 @@
                                             required data-parsley-required-message="Campo requerido"
                                             style="font-size: 0.85rem; height: 32px;">
                                         <option value="">Seleccione un  nombre de producto</option>
-                                        <!-- Opciones dinámicas aquí -->
+                                        <!-- Opciones dinÃ¡micas aquÃ­ -->
                                     </select>
                                 </div>
 
@@ -234,10 +237,10 @@
                                                placeholder="Ej. 100."
                                                pattern="^\d+(\.\d+)?$"
                                                data-parsley-pattern="^\d+(\.\d+)?$"
-                                               data-parsley-pattern-message="Solo se permiten números enteros o decimales"
+                                               data-parsley-pattern-message="Solo se permiten nÃºmeros enteros o decimales"
                                                style="font-size: 0.85rem; height: 32px;" />
                                         <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                            Ingrese solo números enteros o decimales.
+                                            Ingrese solo nÃºmeros enteros o decimales.
                                         </div>
                                     </div>
 
@@ -250,11 +253,11 @@
                                                 required data-parsley-required-message="Campo requerido"
                                                 style="font-size: 0.85rem; height: 32px;">
                                             <option value="">Seleccione una medida</option>
-                                            <!-- Opciones dinámicas aquí -->
+                                            <!-- Opciones dinÃ¡micas aquÃ­ -->
                                         </select>
                                     </div>
 
-                                    <!-- Campo 2: Medida de producto (solo números enteros) -->
+                                    <!-- Campo 2: Medida de producto (solo nÃºmeros enteros) -->
 
                                 </div>
                                 <!-- Fecha de vencimiento -->
@@ -268,28 +271,27 @@
                                            name="fecha_vencimiento"
                                            style="font-size: 0.85rem; height: 32px;" />
                                     <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                        Seleccione una fecha válida en formato día/mes/año.
+                                        Seleccione una fecha vÃ¡lida en formato dÃ­a/mes/aÃ±o.
                                     </div>
                                 </div>
 
                                 <div class="row mb-2 align-items-end">
                                     <!-- Cantidad de unidades -->
-                                    <div class="col-auto" style="max-width: 110px;">
+                                    <div class="col" style="max-width: 95px;">
                                         <label for="cantidad_producto" class="form-label" style="font-size: 0.85rem;">Cantidad <span class="text-danger">*</span></label>
-                                        <input type="number" id="cantidad_producto" name="cantidad_producto" class="form-control form-control-sm"
+                                        <input type="number" id="cantidad_producto" name="cantidad_producto"
+                                               class="form-control form-control-sm"
                                                min="1" step="1" required
                                                placeholder="Ej. 10"
                                                style="font-size: 0.85rem; height: 32px;" />
                                         <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                            Ingrese una cantidad válida (mínimo 1).
+                                            Ingrese una cantidad vÃ¡lida (mÃ­nimo 1).
                                         </div>
                                     </div>
 
                                     <!-- Precio -->
-                                    <div class="col-auto" style="max-width: 110px;">
-                                        <label for="precio_compra" class="form-label" style="font-size: 0.85rem;">
-                                            Costo <span class="text-danger">*</span>
-                                        </label>
+                                    <div class="col" style="max-width: 100px;">
+                                        <label for="precio_compra" class="form-label" style="font-size: 0.85rem;">Costo <span class="text-danger">*</span></label>
                                         <input type="number" id="precio_compra" name="precio_compra"
                                                class="form-control form-control-sm"
                                                min="0.01" step="0.01" required
@@ -301,44 +303,55 @@
                                     </div>
 
                                     <!-- Porcentaje -->
-                                    <div class="col-auto" style="max-width: 110px;">
+                                    <div class="col" style="max-width: 100px;">
                                         <label for="porcentaje" class="form-label" style="font-size: 0.85rem;">
                                             Porcentaje <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text"
+                                        <input type="number"
                                                id="porcentaje"
                                                name="porcentaje"
                                                class="form-control form-control-sm"
                                                required
+                                               min="1"
+                                               step="1"
                                                placeholder="Ej. 25"
-                                               pattern="^\d+$"
-                                               data-parsley-pattern="^\d+$"
-                                               data-parsley-pattern-message="Solo se permiten números enteros sin punto"
                                                style="font-size: 0.85rem; height: 32px;" />
                                         <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                            Ingrese solo números enteros sin punto.
+                                            Ingrese solo nÃºmeros enteros sin punto.
                                         </div>
                                     </div>
-                                    <div class="col-auto" style="max-width: 110x;">
-                                        <label for="precio" class="form-label" style="font-size: 0.85rem;">Precio <span class="text-danger">*</span></label>
-                                        <input type="precio" id="precio" name="precio"
+
+                                    <!-- Precio unitario -->
+                                    <div class="col" style="max-width: 95px;">
+                                        <label for="precioU" class="form-label" style="font-size: 0.85rem;">Precio <span class="text-danger">*</span></label>
+                                        <input type="number" id="precioU" name="precioU"
                                                class="form-control form-control-sm"
                                                min="0" max="100" step="0.1" readonly
+                                               style="font-size: 0.85rem; height: 32px;" />
+                                        <div class="invalid-feedback" style="font-size: 0.75rem;">
+                                            Porcentaje entre 0 y 100.
+                                        </div>
+                                    </div>
 
-                                               style="font-size: 0.85rem; height: 32px; max-width: 110px;" />
+                                    <!-- Total -->
+                                    <div class="col" style="max-width: 95px;">
+                                        <label for="precio" class="form-label" style="font-size: 0.85rem;">Total <span class="text-danger">*</span></label>
+                                        <input type="number" id="precio" name="precio"
+                                               class="form-control form-control-sm"
+                                               min="0" max="100" step="0.1" readonly
+                                               style="font-size: 0.85rem; height: 32px;" />
                                         <div class="invalid-feedback" style="font-size: 0.75rem;">
                                             Porcentaje entre 0 y 100.
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col">
                                     <label for="id_marca" class="form-label">Marca <span class="text-danger">*</span></label>
                                     <select name="id_marca" id="id_marca" class="form-select empleado-select"
                                             required data-parsley-required-message="Campo requerido"
                                             style="font-size: 0.85rem; height: 32px;">
                                         <option value="">Seleccione un Marca</option>
-                                        <!-- Opciones dinámicas aquí -->
+                                        <!-- Opciones dinÃ¡micas aquÃ­ -->
                                     </select>
                                 </div>
 
@@ -373,9 +386,6 @@
                 </div>
             </div>
 
-
-
-
             <div class="modal fade" id="myModalE" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content shadow-lg">
@@ -405,7 +415,7 @@
                                         <label for="numero_de_ordenE" style="font-size: 0.8rem;">Orden de compra</label>
                                     </div>
 
-                                    <!-- Campo flotante: Código de producto -->
+                                    <!-- Campo flotante: CÃ³digo de producto -->
                                     <div class="form-floating mb-2" style="max-width: 280px;">
                                         <input type="text"
                                                class="form-control form-control-sm"
@@ -415,7 +425,7 @@
                                                value="000001"
                                                readonly
                                                style="font-size: 0.85rem; height: 55px; background-color: #fff;" />
-                                        <label for="codigo_productoE" style="font-size: 0.8rem;">Código de producto</label>
+                                        <label for="codigo_productoE" style="font-size: 0.8rem;">CÃ³digo de producto</label>
                                     </div>
                                 </div>
 
@@ -461,10 +471,10 @@
                                                placeholder="Ej. 100.25"
                                                pattern="^\d+(\.\d+)?$"
                                                data-parsley-pattern="^\d+(\.\d+)?$"
-                                               data-parsley-pattern-message="Solo se permiten números enteros o decimales"
+                                               data-parsley-pattern-message="Solo se permiten nÃºmeros enteros o decimales"
                                                style="font-size: 0.85rem; height: 32px;" />
                                         <div class="invalid-feedback" style="font-size: 0.75rem;">
-                                            Ingrese solo números enteros o decimales.
+                                            Ingrese solo nÃºmeros enteros o decimales.
                                         </div>
                                     </div>
 
@@ -477,11 +487,11 @@
                                                 required data-parsley-required-message="Campo requerido"
                                                 style="font-size: 0.85rem; height: 32px;">
                                             <option value="">Seleccione una medida</option>
-                                            <!-- Opciones dinámicas aquí -->
+                                            <!-- Opciones dinÃ¡micas aquÃ­ -->
                                         </select>
                                     </div>
 
-                                    <!-- Campo 2: Medida de producto (solo números enteros) -->
+                                    <!-- Campo 2: Medida de producto (solo nÃºmeros enteros) -->
 
                                 </div>
 
@@ -579,7 +589,7 @@
                                         document.getElementById('sidebar')?.classList.toggle('activo');
                                     });
 
-                                    // Mostrar/ocultar menú de usuario
+                                    // Mostrar/ocultar menÃº de usuario
                                     const usuarioToggle = document.getElementById('usuarioToggle');
                                     const usuarioMenu = document.getElementById('usuarioMenu');
 
@@ -587,7 +597,7 @@
                                         usuarioMenu.style.display = usuarioMenu.style.display === 'flex' ? 'none' : 'flex';
                                     });
 
-                                    // Cerrar el menú si se hace clic fuera
+                                    // Cerrar el menÃº si se hace clic fuera
                                     document.addEventListener('click', (e) => {
                                         if (!usuarioToggle.contains(e.target) && !usuarioMenu.contains(e.target)) {
                                             usuarioMenu.style.display = 'none';
@@ -616,70 +626,72 @@
         </script>
 
 
-        <script>
-            async function imprimirPDF() {
-                const {jsPDF} = window.jspdf;
-                const doc = new jsPDF();
+      <script>
+async function imprimirPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
 
-                const valor = document.getElementById("codigo_producto").value || "?";
-                const cantidad = parseInt(document.getElementById("cantidad").value) || 1;
+    const valor = document.getElementById("codigo_producto").value || "?";
+    const cantidad = parseInt(document.getElementById("cantidad").value) || 1;
 
-                const etiquetasPorFila = 5;       // ? ahora son 5 por fila
-                const espacioX = 40;              // separación horizontal
-                const espacioY = 30;              // separación vertical
-                const margenIzquierdo = 10;
-                const margenSuperior = 10;
+    const etiquetasPorFila = 4;
+    const etiquetaAncho = 45;
+    const etiquetaAlto = 30;
+    const espacioX = 10; // espacio entre etiquetas
+    const espacioY = 40;
+    const margenSuperior = 15;
 
-                let etiquetaGenerada = 0;
+    const paginaAncho = doc.internal.pageSize.getWidth();
+    const filaAnchoTotal = etiquetasPorFila * etiquetaAncho + (etiquetasPorFila - 1) * espacioX;
+    const margenIzquierdo = (paginaAncho - filaAnchoTotal) / 2;
 
-                while (etiquetaGenerada < cantidad) {
-                    for (let fila = 0; fila < Math.ceil(cantidad / etiquetasPorFila); fila++) {
-                        for (let columna = 0; columna < etiquetasPorFila; columna++) {
-                            if (etiquetaGenerada >= cantidad)
-                                break;
+    let etiquetaGenerada = 0;
 
-                            const x = margenIzquierdo + columna * espacioX;
-                            const y = margenSuperior + fila * espacioY;
+    while (etiquetaGenerada < cantidad) {
+        for (let fila = 0; fila < Math.ceil(cantidad / etiquetasPorFila); fila++) {
+            for (let columna = 0; columna < etiquetasPorFila; columna++) {
+                if (etiquetaGenerada >= cantidad) break;
 
-                            // Crear canvas temporal con mayor resolución
-                            const canvas = document.createElement("canvas");
-                            canvas.width = 300;
-                            canvas.height = 100;
-                            const ctx = canvas.getContext("2d");
-                            ctx.scale(2, 2); // mejora la calidad visual
+                const x = margenIzquierdo + columna * (etiquetaAncho + espacioX);
+                const y = margenSuperior + fila * espacioY;
 
-                            JsBarcode(canvas, valor, {
-                                format: "CODE128",
-                                lineColor: "#000",
-                                width: 1.5,
-                                height: 40,
-                                displayValue: true,
-                                fontSize: 10,
-                                textMargin: 0
-                            });
+                const canvas = document.createElement("canvas");
+                canvas.width = 400;
+                canvas.height = 120;
+                const ctx = canvas.getContext("2d");
+                ctx.scale(2, 2);
 
-                            const imgData = canvas.toDataURL("image/png");
+                JsBarcode(canvas, valor, {
+                    format: "CODE128",
+                    lineColor: "#000",
+                    width: 2.5,
+                    height: 60,
+                    displayValue: true,
+                    fontSize: 14,
+                    textMargin: 2
+                });
 
-                            // Si se pasa del alto de la página, agrega nueva
-                            if (y + 20 > doc.internal.pageSize.height) {
-                                doc.addPage();
-                                fila = -1;
-                                break;
-                            }
+                const imgData = canvas.toDataURL("image/png");
 
-                            doc.addImage(imgData, "PNG", x, y, 35, 20); // ? tamaño compacto
-                            etiquetaGenerada++;
-                        }
-                    }
+                if (y + etiquetaAlto > doc.internal.pageSize.height) {
+                    doc.addPage();
+                    fila = -1;
+                    break;
                 }
 
-                doc.save("codigos.pdf");
+                doc.addImage(imgData, "PNG", x, y, etiquetaAncho, etiquetaAlto);
+                etiquetaGenerada++;
             }
-        </script>
+        }
+    }
+
+    doc.save("codigos.pdf");
+}
+</script>
         <script>
             const codigoCompra = "<%= request.getParameter("codigo_compra")%>";
-            console.log("Código de compra recibido:", codigoCompra);
-            cargarTabla(codigoCompra); // ahora sí usa el ID dinámico
+            console.log("CÃ³digo de compra recibido:", codigoCompra);
+            cargarTabla(codigoCompra); // ahora sÃ­ usa el ID dinÃ¡mico
         </script>
         <script>
             document.getElementById('medida_producto').addEventListener('keypress', function (e) {
@@ -687,17 +699,23 @@
                 const isValid = /^[0-9.]$/.test(char);
 
                 if (!isValid) {
-                    e.preventDefault(); // bloquea letras y símbolos no numéricos
+                    e.preventDefault(); // bloquea letras y sÃ­mbolos no numÃ©ricos
                 }
             });
         </script>
         <script>
             document.getElementById('id_productoE').addEventListener('mousedown', function (e) {
-                e.preventDefault(); // bloquea el clic para abrir el menú
+                e.preventDefault(); // bloquea el clic para abrir el menÃº
             });
         </script>
 
-
+<script>
+document.getElementById("porcentaje").addEventListener("keydown", function (e) {
+  if (e.key === "." || e.key === "," || e.key === "Decimal") {
+    e.preventDefault(); //  Bloquea punto y coma decimal
+  }
+});
+</script>
     </body>
     <div id="toast" class="toast">Guardado correctamente ?</div>
 </html>

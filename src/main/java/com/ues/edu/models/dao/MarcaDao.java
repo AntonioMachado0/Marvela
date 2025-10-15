@@ -64,7 +64,41 @@ public ArrayList<Marca> selectALL(Integer estado, String quien) throws SQLExcept
         }
         return listMarca;
     }
-    
+    public boolean existeMarcaConOtroId(String nombreMarca, int idActual) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM marca WHERE LOWER(nombre_marca) = LOWER(?) AND id_marca != ?";
+    try (Connection conn = conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombreMarca.trim());
+        ps.setInt(2, idActual);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    }
+    return false;
+}
+    public boolean existeMarca(String nombreMarca) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM marca WHERE LOWER(nombre_marca) = LOWER(?)";
+    try (Connection conn = conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, nombreMarca.trim());
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            int count = rs.getInt(1);
+            System.out.println("Cantidad de coincidencias: " + count);
+            return count > 0;
+        } else {
+            System.out.println("No se obtuvo resultado del ResultSet.");
+            return false;
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error en existeMarca: " + e.getMessage());
+        throw e;
+    }
+}
     //insertar
     public String insert(Marca marca) throws SQLException {
 
@@ -209,6 +243,7 @@ public ArrayList<Marca> selectALL(Integer estado, String quien) throws SQLExcept
         }
 
         return listarCombo;
+    }
     }
     
     

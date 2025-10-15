@@ -1,7 +1,3 @@
-/* 
- * Sistema de Backup - Ferretería Marvela
- * Funcionalidades: Generar, restaurar y gestionar backups
- */
 
 // Función para confirmar la generación de backup
 function confirmarBackup() {
@@ -311,9 +307,7 @@ document.getElementById('restoreBtn').addEventListener('click', function(e) {
         html: `<div style="text-align: left;">
                <p><strong style="color: #dc3545;">ADVERTENCIA CRÍTICA</strong></p>
                <ul style="text-align: left; padding-left: 20px;">
-                 <li>Todos los datos actuales serán reemplazados permanentemente</li>
-                 <li>Esta acción no se puede deshacer</li>
-                 <li>El sistema puede quedar inaccesible temporalmente</li>
+                 <li>Todos los datos actuales serán reemplazados</li>             
                </ul>
                <p style="margin-top: 20px;">Escriba <strong>RESTAURAR</strong> para confirmar:</p>
                <input type="text" id="confirmText" class="swal2-input" placeholder="RESTAURAR" style="text-align: center; font-weight: bold; text-transform: uppercase;">

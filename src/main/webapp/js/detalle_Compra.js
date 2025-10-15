@@ -24,38 +24,41 @@ $(document).on("submit", "#formulario_insert", function (e) {
     var id_marca = $("#id_marca").val();
     var id_medida = $("#id_medida").val();
 
-    // Validar y transformar fecha (YYYY-MM-DD → DD/MM/YYYY)
-    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha_vencimiento)) {
-        const partes = fecha_vencimiento.split("-");
-        fecha_vencimiento = `${partes[2]}/${partes[1]}/${partes[0]}`;
+if (fecha_vencimiento && fecha_vencimiento.trim() !== "") {
+  // Si está en formato YYYY-MM-DD, lo transformamos
+  if (/^\d{4}-\d{2}-\d{2}$/.test(fecha_vencimiento)) {
+    const partes = fecha_vencimiento.split("-");
+    fecha_vencimiento = `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  // Validar que la fecha sea futura (formato DD/MM/YYYY)
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(fecha_vencimiento)) {
+    const partes = fecha_vencimiento.split("/");
+    const fechaIngresada = new Date(partes[2], partes[1] - 1, partes[0]);
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    if (fechaIngresada <= hoy) {
+      Swal.fire({
+        title: 'Fecha incorrecta',
+        text: 'Solo se permiten fechas futuras',
+        icon: 'warning',
+        confirmButtonText: 'Entendido'
+      });
+      return;
     }
-
-    // Validar que la fecha sea futura (formato DD/MM/YYYY)
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(fecha_vencimiento)) {
-        const partes = fecha_vencimiento.split("/");
-        const fechaIngresada = new Date(partes[2], partes[1] - 1, partes[0]); // Año, Mes, Día
-
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0); // Eliminar hora para comparar solo fechas
-
-        if (fechaIngresada <= hoy) {
-            Swal.fire({
-                title: 'Fecha incorrecta',
-                text: 'Solo se permiten fechas futuras',
-                icon: 'warning',
-                confirmButtonText: 'Entendido'
-            });
-            return; // 🚫 Detener envío
-        }
-    } else {
-        Swal.fire({
-            title: 'Formato incorrecto',
-            text: 'La fecha debe tener el formato DD/MM/YYYY',
-            icon: 'error',
-            confirmButtonText: 'Entendido'
-        });
-        return;
-    }
+  } else {
+    Swal.fire({
+      title: 'Formato incorrecto',
+      text: 'La fecha debe tener el formato DD/MM/YYYY',
+      icon: 'error',
+      confirmButtonText: 'Entendido'
+    });
+    return;
+  }
+}
+// Si no hay fecha, no se valida nada y se continúa
 
     var datos = {
         "consultar_datos": "insertar",
@@ -75,10 +78,10 @@ $(document).on("submit", "#formulario_insert", function (e) {
 
     // ✅ Confirmación antes de guardar
     Swal.fire({
-        title:'Continuara con el registro',
+        title:'¿Continuara con el registro?',
         html: `
             <strong>Producto:</strong> ${$("#id_producto option:selected").text()}<br>
-            <strong>Codigo producto:</strong> ${codigo_producto}<br>
+            <strong>Código producto:</strong> ${codigo_producto}<br>
             <strong>Precio unitario:</strong> $${parseFloat(precio_compra).toFixed(2)}<br><br>
             <em>Estos campos no  editables .</em>
         `,
@@ -405,8 +408,24 @@ function calcularTotalVenta() {
 });
 
 
+function precioUnitario() {
+  const cantidad = parseFloat(document.getElementById("cantidad_producto").value) || 0;
+  const costo = parseFloat(document.getElementById("precio_compra").value) || 0;
+  const porcentaje = parseFloat(document.getElementById("porcentaje").value) || 0;
 
+  // Calcular precio unitario con porcentaje
+  const precioConPorcentaje = costo * (1 + porcentaje / 100);
+  document.getElementById("precioU").value = precioConPorcentaje.toFixed(2);
 
+  // Calcular total
+  const total = cantidad * precioConPorcentaje;
+  document.getElementById("precio").value = total.toFixed(2);
+}
+
+// Ejecutar al cambiar cualquier campo
+["cantidad_producto", "precio_compra", "porcentaje"].forEach(id => {
+  document.getElementById(id).addEventListener("input", precioUnitario);
+});
 function cargarDatosModal(codigo_detalle_compra) {
     var datos = {
         consultar_datos: "cargarDatos",
@@ -525,4 +544,10 @@ function refrescarTabla() {
     const codigoCompra = new URLSearchParams(window.location.search).get("codigo_compra");
     cargarTabla(codigoCompra); // Esta función ya actualiza solo la tabla
 }
+
+document.getElementById("porcentaje").addEventListener("keydown", function (e) {
+  if (e.key === "." || e.key === ",") {
+    e.preventDefault(); // ❌ Bloquea punto y coma decimal
+  }
+});
 

@@ -13,6 +13,7 @@
 <%@page import="com.ues.edu.models.Productos"%>
 <%@page import="com.ues.edu.models.Compras"%>
 <%@page import="com.ues.edu.models.dao.ComprasDao"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -49,14 +50,14 @@
     <body>
         <aside class="sidebar activo" id="sidebar">
             <div class="menu-header" id="colapsarMenu">
-                <i class="fas fa-bars"></i> <span>Menú</span>
+                <i class="fas fa-bars"></i> <span>MenÃº</span>
             </div>
             <nav class="menu">
                 <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
                 <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
                 <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
                 <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
-                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
+                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>CategorÃ­a</span></a>
                 <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
             </nav>
         </aside>
@@ -75,7 +76,7 @@
                         </div>
                         <div class="usuario-dropdown-menu" id="usuarioMenu">
                             <a href="#">Mi perfil</a>
-                            <a href="#">Cerrar sesión</a>
+                            <a href="#">Cerrar sesiÃ³n</a>
                         </div>
                     </div>
 
@@ -90,11 +91,7 @@
                         NUEVO
                     </button>
 
-                    <div style="margin-left: 0.5cm;">
-                        <button type="button" class="btn-marvela" data-bs-toggle="modal" data-bs-target="#myModal1">
-                            EXISTENTES
-                        </button>
-                    </div>
+                   
 
 
                 </div>
@@ -123,7 +120,7 @@
                                 <!-- Campo: Nombre de Producto -->
                                 <div class="mb-2" style="max-width: 470px;">
                                     <label for="nombre_producto" class="form-label" style="font-size: 0.85rem;">
-                                        Nombre de Producto <span class="text-danger">*</span>
+                                        Nombre de producto <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control form-control-sm" id="nombre_producto" name="nombre_producto"
                                            required placeholder="Ej. Producto A"
@@ -134,27 +131,27 @@
                                     </div>
                                 </div>
 
-                                <!-- Campo: Descripción de Producto -->
+                                <!-- Campo: DescripciÃ³n de Producto -->
                                 <div class="mb-2" style="max-width: 470px;">
                                     <label for="descripcion" class="form-label" style="font-size: 0.85rem;">
-                                        Descripción de producto <span class="text-danger">*</span>
+                                        DescripciÃ³n de producto <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control form-control-sm" id="descripcion" name="descripcion"
-                                           required placeholder="Ej. Detalle técnico"
+                                           required placeholder="Ej. Detalle tÃ©cnico"
                                            style="font-size: 0.85rem; height: 32px;" />
                                     <div class="invalid-feedback" style="font-size: 0.75rem;">
                                         Ingrese solo letras y espacios, entre 5 y 100 caracteres.
                                     </div>
                                 </div>
 
-                                <!-- Campo: Categoría -->
+                                <!-- Campo: CategorÃ­a -->
                                 <div class="col">
                                     <label for="codigo_categoria" class="form-label">Categoria <span class="text-danger">*</span></label>
                                     <select name="codigo_categoria" id="codigo_categoria" class="form-select empleado-select"
                                             required data-parsley-required-message="Campo requerido"
                                             style="font-size: 0.85rem; height: 32px;">
                                         <option value="">Seleccione una categoria</option>
-                                        <!-- Opciones dinámicas aquí -->
+                                        <!-- Opciones dinÃ¡micas aquÃ­ -->
                                     </select>
                                 </div>
 
@@ -199,9 +196,7 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="fas fa-save me-1"></i> Guardar
                                 </button>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save me-1"></i> Imprimir
-                                </button>
+                              
                             </div>
 
                         </form>
@@ -228,7 +223,7 @@
                                 <!-- Nombre de Producto -->
                                 <div class="mb-2" style="max-width: 470px;">
                                     <label for="nombre_productoE" class="form-label" style="font-size: 0.85rem;">
-                                        Nombre de Producto <span class="text-danger">*</span>
+                                        Nombre de producto <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control form-control-sm" id="nombre_productoE" name="nombre_productoE"
                                            required placeholder="Ej. Producto A"
@@ -238,27 +233,27 @@
                                     </div>
                                 </div>
 
-                                <!-- Descripción -->
+                                <!-- DescripciÃ³n -->
                                 <div class="mb-2" style="max-width: 470px;">
                                     <label for="descripcionE" class="form-label" style="font-size: 0.85rem;">
-                                        Descripción de producto <span class="text-danger">*</span>
+                                        DescripciÃ³n de producto <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control form-control-sm" id="descripcionE" name="descripcionE"
-                                           required placeholder="Ej. Detalle técnico"
+                                           required placeholder="Ej. Detalle tÃ©cnico"
                                            style="font-size: 0.85rem; height: 32px;" />
                                     <div class="invalid-feedback" style="font-size: 0.75rem;">
                                         Ingrese solo letras y espacios, entre 5 y 100 caracteres.
                                     </div>
                                 </div>
 
-                                <!-- Categoría -->
+                                <!-- CategorÃ­a -->
                                 <div class="mb-2" style="max-width: 470px;">
-                                    <label for="codigo_categoriaE" class="form-label">Categoría <span class="text-danger">*</span></label>
+                                    <label for="codigo_categoriaE" class="form-label">CategorÃ­a <span class="text-danger">*</span></label>
                                     <select name="codigo_categoriaE" id="codigo_categoriaE" class="form-select empleado-select"
                                             required data-parsley-required-message="Campo requerido"
                                             style="font-size: 0.85rem; height: 32px;">
-                                        <option value="">Seleccione una categoría</option>
-                                        <!-- Opciones dinámicas -->
+                                        <option value="">Seleccione una categorÃ­a</option>
+                                        <!-- Opciones dinÃ¡micas -->
                                     </select>
                                 </div>
 
@@ -311,10 +306,10 @@
                 document.body.classList.toggle('oscuro');
             });
 
-            // Código de barras en la tabla
+            // CÃ³digo de barras en la tabla
 
 
-            // Vista previa dinámica
+            // Vista previa dinÃ¡mica
             const inputCodigo = document.getElementById("codigo");
             const barcode = document.getElementById("barcode");
 
@@ -336,7 +331,7 @@
                 document.getElementById('sidebar')?.classList.toggle('activo');
             });
 
-            // Mostrar/ocultar menú de usuario
+            // Mostrar/ocultar menÃº de usuario
             const usuarioToggle = document.getElementById('usuarioToggle');
             const usuarioMenu = document.getElementById('usuarioMenu');
 
@@ -344,7 +339,7 @@
                 usuarioMenu.style.display = usuarioMenu.style.display === 'flex' ? 'none' : 'flex';
             });
 
-            // Cerrar el menú si se hace clic fuera
+            // Cerrar el menÃº si se hace clic fuera
             document.addEventListener('click', (e) => {
                 if (!usuarioToggle.contains(e.target) && !usuarioMenu.contains(e.target)) {
                     usuarioMenu.style.display = 'none';

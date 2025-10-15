@@ -15,7 +15,12 @@
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<!-- Bootstrap CSS -->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS + Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
@@ -136,6 +141,52 @@
                     </div>
 
                 </div>
+               <div class="modal fade" id="modalDetalleProducto" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="modalDetalleTitle">Detalles del Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-4">
+          <!-- Imagen del producto -->
+          <div class="col-md-5 text-center">
+            <img id="detalleImagen" src="" alt="" class="img-fluid rounded" style="max-height: 300px;">
+            <div class="mt-3">
+              <svg id="detalleBarcode" style="width: 150px; height: 40px;"></svg>
+              <div style="font-size: 0.7rem; color: #555;">Código de barras</div>
+            </div>
+          </div>
+
+          <!-- Datos del producto -->
+          <div class="col-md-7">
+            <ul class="list-group list-group-flush">
+  <li class="list-group-item"><strong>Producto:</strong> <span id="detalleNombreProducto"></span></li>
+  <li class="list-group-item"><strong>Marca:</strong> <span id="detalleMarca"></span></li>
+  <li class="list-group-item"><strong>Cantidad disponible:</strong> <span id="detalleCantidadTexto"></span></li>
+
+  <li class="list-group-item"><strong>Precio:</strong> $<span id="detallePrecio"></span></li>
+  <li class="list-group-item"><strong>Código:</strong> <span id="detalleCodigo"></span></li>
+</ul>
+            <div class="mt-3">
+  <label for="detalleCantidadInput" style="font-size: 0.8rem;">Cantidad de etiquetas</label>
+  <input type="number" id="detalleCantidadInput" min="1" max="100" value="1" class="form-control form-control-sm" style="width: 80px;">
+</div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" onclick="imprimirEtiquetaDesdeModal()">
+  <i class="fas fa-print me-1"></i> Imprimir etiqueta
+</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
             </header>
