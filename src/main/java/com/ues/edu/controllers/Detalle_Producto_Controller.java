@@ -71,67 +71,7 @@ public class Detalle_Producto_Controller extends HttpServlet {
         }
 
         switch (filtro) {
-//            case "mostrar":
-//
-//                JSONArray array_mostrarCompra = new JSONArray();
-//                JSONObject json_mostrarCompra = new JSONObject();
-//                String html1 = "";
-//                String estadoM = request.getParameter("estado");
-//
-//                try {
-//                    System.out.println("🔄 ENTRÓ AL CASO 'mostrar'");
-//                    DetalleCompraDao obaut = new DetalleCompraDao();
-//
-//                    this.listaCompraActividad = new ArrayList<>();
-//                    this.listaCompra2 = obaut.selectAllDetalleCompra(Integer.valueOf(estadoM), "todos");
-//
-//                    html1 += "<div class=\"tabla_listCom\">"
-//                            + "<table id=\"tabla_listCom\" class=\"table table-hover datanew\">"
-//                            + "<thead>"
-//                            + "<tr class=\"mb-2 green text-center\">"
-//                            + "<th class=\"text-center\" style=\"color: white !important;\">NOMBRE</th>"
-//                            + "<th class=\"text-center\" style=\"color: white !important;\">CANTIDA</th>"
-//                            + "<th class=\"text-center\" style=\"color: white !important;\">COSTO</th>"
-//                            + "<th class=\"text-center\" style=\"color: white !important;\">PRECIO UNITARIO </th>"
-//                            + "<th class=\"text-center\" style=\"color: white !important;\">TOTAL VENTA</th>"
-//                            + "<th class=\"text-center\" style=\"color: white !important;\">ACCIÓN</th>"
-//                            + "</tr>"
-//                            + "</thead>"
-//                            + "<tbody>";
-//
-//                    for (DetalleCompra obj : listaCompra2) {
-//                        int codigoDetalleCompra = obj.getCodigoDetalleCompra();
-//
-//                        html1 += "<tr class=\"text-center\">";
-//                        html1 += "<td class=\"text-center\">" + obj.getProductos().getNombre() + "</td>";
-//                        html1 += "<td class=\"text-center\">" + obj.getCantidad() + "</td>";
-//
-//                        html1 += "<td class=\"text-center\">" + obj.getPrecioCompra() + "</td>";
-//                        html1 += "<td class=\"text-center\">" + obj.getPrecioVentaUnitario() + "</td>";
-//                        html1 += "<td class=\"text-center\">" + obj.getTotalVenta() + "</td>";
-//                       
-//                        html1 += "<td>"
-//       + "<button class='btn btn-success btn_editar' data-id='" + obj.getCodigoDetalleCompra() + "'>"
-//       + "<i class='fas fa-edit'></i></button>"
-//       + "</td>";
-//                        html1 += "</tr>";
-//                         System.out.println("ID generado para botón: " + obj.getCodigoDetalleCompra());
-//                    }
-//
-//                    html1 += "</tbody></table></div>";
-//                    json_mostrarCompra.put("resultado", "exito");
-//                    json_mostrarCompra.put("tabla", html1);
-//
-//                } catch (Exception ex) {
-//                    Logger.getLogger(Detalle_Producto_Controller.class.getName()).log(Level.SEVERE, null, ex);
-//                    json_mostrarCompra.put("resultado", "error");
-//                    json_mostrarCompra.put("mensaje", ex.getMessage());
-//                }
-//
-//                array_mostrarCompra.put(json_mostrarCompra);
-//                response.getWriter().write(array_mostrarCompra.toString());
-//
-//                break;
+
             case "mostrar": {
                 JSONArray array_mostrarCompra = new JSONArray();
                 JSONObject json_mostrarCompra = new JSONObject();
@@ -149,7 +89,7 @@ public class Detalle_Producto_Controller extends HttpServlet {
                             + "<thead>"
                             + "<tr class=\"mb-2 green text-center\">"
                             + "<th class=\"text-center\" style=\"color: white !important;\">NOMBRE</th>"
-                            + "<th class=\"text-center\" style=\"color: white !important;\">CANTIDA</th>"
+                            + "<th class=\"text-center\" style=\"color: white !important;\">CANTIDAD</th>"
                             + "<th class=\"text-center\" style=\"color: white !important;\">COSTO</th>"
                             + "<th class=\"text-center\" style=\"color: white !important;\">PRECIO UNITARIO </th>"
                             + "<th class=\"text-center\" style=\"color: white !important;\">TOTAL VENTA</th>"

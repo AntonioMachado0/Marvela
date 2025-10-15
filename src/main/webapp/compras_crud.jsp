@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -21,14 +22,14 @@
     <body>
         <aside class="sidebar activo" id="sidebar">
             <div class="menu-header" id="colapsarMenu">
-                <i class="fas fa-bars"></i> <span>Menú</span>
+                <i class="fas fa-bars"></i> <span>MenÃº</span>
             </div>
             <nav class="menu">
                 <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
                 <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
                 <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
                 <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
-                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
+                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>CategorÃ­a</span></a>
                 <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
             </nav>
         </aside>
@@ -47,7 +48,7 @@
                         </div>
                         <div class="usuario-dropdown-menu" id="usuarioMenu">
                             <a href="#">Mi perfil</a>
-                            <a href="#">Cerrar sesión</a>
+                            <a href="#">Cerrar sesiÃ³n</a>
                         </div>
                     </div>
 
@@ -80,7 +81,7 @@
                             <div class="modal-body">
                                 <!-- Nombre Proveedor -->
                                 <div
-                                    <label for="nombreproveedor">Número De Orden <span class="text-danger">*</span></label></label>
+                                    <label for="nombreproveedor">NÃºmero De Orden <span class="text-danger">*</span></label></label>
                                     <div class="form-floating mb-3 position-relative">
   <input type="text"
          class="form-control"
@@ -91,14 +92,14 @@
          title="Debe contener solo numeros y guiones, y al menos tres digitos.">
   <label for="numero_de_orden">Numero de compra</label>
 
-  <!-- Mensaje si está vacío -->
+  <!-- Mensaje si estÃ¡ vacÃ­o -->
   <div class="invalid-feedback" id="error_vacio">
     El campo no puede estar vacio.
   </div>
 
   <!-- Mensaje si el formato es incorrecto -->
   <div class="invalid-feedback" id="error_formato" style="display: none;">
-    se requieren minimo tres dígitos y solo se permiten números y guiones.
+    se requieren minimo tres dÃ­gitos y solo se permiten nÃºmeros y guiones.
   </div>
 </div>
 
@@ -109,13 +110,13 @@
                                         <input type="date" class="form-control" id="fecha_de_orden" name="fecha_de_orden" pattern="\d{2}-\d{2}-\d{4}" required>
                                         <label for="fecha_compra">Fecha de compra </label>
                                         <div class="invalid-feedback">
-                                            Seleccione una fecha válida en formato día/mes/año.
+                                            Seleccione una fecha vÃ¡lida en formato dÃ­a/mes/aÃ±o.
                                         </div>
                                     </div>
              <div class="form-floating mb-3">
   <select class="form-select" id="codigo_empleado" name="codigo_empleado" required>
     <option value="">Seleccione un empleado</option>
-    <!-- Opciones dinámicas aquí -->
+    <!-- Opciones dinÃ¡micas aquÃ­ -->
   </select>
   <label for="codigo_empleado">Empleado</label>
   <div class="invalid-feedback">
@@ -125,7 +126,7 @@
 <div class="form-floating mb-3">
   <select class="form-select" id="codigo_proveedor" name="codigo_proveedor" required>
     <option value="">Seleccione un proveedor</option>
-    <!-- Opciones dinámicas aquí -->
+    <!-- Opciones dinÃ¡micas aquÃ­ -->
   </select>
   <label for="codigo_proveedor">Proveedor</label>
   <div class="invalid-feedback">
@@ -169,9 +170,9 @@
                                 <input type="hidden" id="codigo_compra" name="codigo_compra">
                                 <div class="form-floating mb-3 position-relative">
                                     <input type="text" class="form-control" id="numero_de_ordenE" name="numero_de_orden" required minlength="5" maxlength="100">
-                                    <label for="numero_de_ordenE">Número De Orden</label>
+                                    <label for="numero_de_ordenE">NÃºmero De Orden</label>
                                     <div class="invalid-feedback">
-                                        Ingrese un número entre 5 y 100 caracteres.
+                                        Ingrese un nÃºmero entre 5 y 100 caracteres.
                                     </div>
                                 </div>
 
@@ -182,7 +183,7 @@
                                         <input type="date" class="form-control" id="fecha_de_ordenE" name="fecha_de_orden" required>
                                         <label for="fecha_de_ordenE">Fecha de compra</label>
                                         <div class="invalid-feedback">
-                                            Seleccione una fecha válida en formato día/mes/año.
+                                            Seleccione una fecha vÃ¡lida en formato dÃ­a/mes/aÃ±o.
                                         </div>
                                     </div>
                                 </div>
@@ -228,10 +229,10 @@
             <script>
 
 
-                // Código de barras en la tabla
+                // CÃ³digo de barras en la tabla
 
 
-                // Vista previa dinámica
+                // Vista previa dinÃ¡mica
                 const inputCodigo = document.getElementById("codigo");
                 const barcode = document.getElementById("barcode");
 
@@ -251,7 +252,7 @@
                     document.getElementById('sidebar')?.classList.toggle('activo');
                 });
 
-                // Mostrar/ocultar menú de usuario
+                // Mostrar/ocultar menÃº de usuario
                 const usuarioToggle = document.getElementById('usuarioToggle');
                 const usuarioMenu = document.getElementById('usuarioMenu');
 
@@ -259,7 +260,7 @@
                     usuarioMenu.style.display = usuarioMenu.style.display === 'flex' ? 'none' : 'flex';
                 });
 
-                // Cerrar el menú si se hace clic fuera
+                // Cerrar el menÃº si se hace clic fuera
                 document.addEventListener('click', (e) => {
                     if (!usuarioToggle.contains(e.target) && !usuarioMenu.contains(e.target)) {
                         usuarioMenu.style.display = 'none';

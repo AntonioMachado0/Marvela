@@ -98,14 +98,18 @@ function mostrarInventario(datosPorFecha) {
                         <table class="table table-striped table-hover mb-0" id="tabla-${fechaId}">
                             <thead class="encabezado-verde">
                                 <tr>
-                                    <th><i class="fas fa-image"></i> Imagen</th>
-                                    <th><i class="fas fa-barcode"></i> Código</th>
-                                    <th><i class="fas fa-cube"></i> Producto</th>
-                                    <th><i class="fas fa-tag"></i> Marca</th>
-                                    <th><i class="fas fa-balance-scale"></i> Cantidad</th>
-                                    <th><i class="fas fa-ruler"></i> Medida</th>
-                                    <th><i class="fas fa-dollar-sign"></i> Precio Venta</th>
-                                    <th><i class="fas fa-calendar-times"></i> Vencimiento</th>
+                                    <th style="font-size:12px;"><i class="fas fa-image"></i> IMAGEN</th>
+                                   <th style="font-size:12px;"><i class="fas fa-barcode"></i> CÓDIGO</th>
+                                   <th style="font-size:12px;"><i class="fas fa-cube"></i> PRODUCTO</th>
+                                   <th style="font-size:12px;"><i class="fas fa-tag"></i> MARCA</th>
+                                   <th style="font-size:12px;"><i class="fas fa-balance-scale"></i> CANTIDAD</th>
+                                   <th style="font-size:12px;"><i class="fas fa-ruler"></i> MEDIDA</th>
+                                   <th style="font-size:12px;"><i class="fas fa-dollar-sign"></i> PRECIO VENTA</th>
+                                    <th style="font-size:12px;"><i class="fas fa-calendar-times"></i> VENCIMIENTO</th>
+<th style="width: 65px; text-align: center; font-size:12px; padding-left:0; padding-right:0;">
+  IMPRIMIR
+</th>
+        
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -156,6 +160,12 @@ function mostrarInventario(datosPorFecha) {
                                  <i class="fas fa-image"></i>
                              </div>`;
             }
+            const productoCodificado = btoa(unescape(encodeURIComponent(JSON.stringify(producto))));
+
+const botonDetalle = `<button class="btn btn-sm btn-outline-primary ver-detalle" data-producto="${productoCodificado}" title="Imprimir etiqueta">
+  <i class="fas fa-print"></i>
+</button>`;
+
             
             const fila = $(`
                 <tr>
@@ -178,9 +188,15 @@ function mostrarInventario(datosPorFecha) {
                         ${infoDias}
                         ${iconoVencimiento}
                     </td>
+            
+            
+            <td class="text-center">${botonDetalle}</td>
+
                 </tr>
+            
             `);
             tbody.append(fila);
+            
         });
 
         contenedor.append(seccionFecha);
@@ -211,6 +227,102 @@ function mostrarInventario(datosPorFecha) {
     $('[title]').tooltip();
 }
 
+$(document).on('click', '.ver-detalle', function () {
+  const codificado = $(this).data('producto');
+  const producto = JSON.parse(decodeURIComponent(escape(atob(codificado))));
+  mostrarDetalleProducto(producto);
+});
+function mostrarDetalleProducto(producto) {
+  $('#detalleImagen').attr('src', `data:${producto.tipoImagen || 'image/jpeg'};base64,${producto.imagen || ''}`);
+ $('#detalleNombreProducto').text(producto.nombreProducto || 'N/A');
+$('#detalleMarca').text(producto.nombreMarca || 'N/A');
+$('#detalleCantidadTexto').text(producto.cantidadProducto || 0);
+$('#detalleCantidadInput').val(1);
+$('#detalleCantidadInput').attr('max', producto.cantidadProducto || 1);
+$('#detallePrecio').text(producto.precioVenta ? producto.precioVenta.toFixed(2) : '0.00');
+$('#detalleCodigo').text(producto.codigoProducto || 'N/A');
+
+  // Generar código de barras
+  JsBarcode("#detalleBarcode", producto.codigoProducto || "?", {
+    format: "CODE128",
+    lineColor: "#000",
+    width: 1.5,
+    height: 40,
+    displayValue: true,
+    fontSize: 12,
+    textMargin: 0
+  });
+
+  // Mostrar modal
+  const modal = new bootstrap.Modal(document.getElementById('modalDetalleProducto'));
+  modal.show();
+}
+
+
+function imprimirEtiquetaDesdeModal() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const codigo = document.getElementById("detalleCodigo").textContent.trim();
+  const cantidad = parseInt(document.getElementById("detalleCantidadInput").value) || 1;
+  const cantidadDisponible = parseInt(document.getElementById("detalleCantidadTexto").textContent) || 0;
+
+  if (!codigo) {
+    alert("No hay código disponible para imprimir.");
+    return;
+  }
+
+  if (cantidad > cantidadDisponible) {
+    alert(`Solo hay ${cantidadDisponible} unidades disponibles. No puedes imprimir más etiquetas que el stock.`);
+    return;
+  }
+
+  const etiquetasPorFila = 4;
+  const espacioX = 50;
+  const espacioY = 35;
+  const margenIzquierdo = 10;
+  const margenSuperior = 10;
+
+  const pageHeight = doc.internal.pageSize.height;
+  const etiquetasPorColumna = Math.floor((pageHeight - margenSuperior) / espacioY);
+  const etiquetasPorPagina = etiquetasPorFila * etiquetasPorColumna;
+
+  for (let i = 0; i < cantidad; i++) {
+    const paginaActual = Math.floor(i / etiquetasPorPagina);
+    const posicionEnPagina = i % etiquetasPorPagina;
+
+    const fila = Math.floor(posicionEnPagina / etiquetasPorFila);
+    const columna = posicionEnPagina % etiquetasPorFila;
+
+    const x = margenIzquierdo + columna * espacioX;
+    const y = margenSuperior + fila * espacioY;
+
+    if (i > 0 && posicionEnPagina === 0) {
+      doc.addPage();
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = 400;
+    canvas.height = 120;
+    const ctx = canvas.getContext("2d");
+    ctx.scale(2, 2);
+
+    JsBarcode(canvas, codigo, {
+      format: "CODE128",
+      lineColor: "#000",
+      width: 2,
+      height: 50,
+      displayValue: true,
+      fontSize: 12,
+      textMargin: 0
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+    doc.addImage(imgData, "PNG", x, y, 45, 25);
+  }
+
+  doc.save(`etiquetas_${codigo}.pdf`);
+}
 // Función para ampliar imagen
 function ampliarImagen(src, nombre) {
     $('#imagenAmpliada').attr('src', src).attr('alt', nombre);

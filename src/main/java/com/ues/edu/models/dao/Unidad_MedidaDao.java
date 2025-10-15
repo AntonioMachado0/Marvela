@@ -69,7 +69,33 @@ rg.setAbreviacion(rs.getString("abreviacion"));
         }
         return listMedida;
     }
-    
+    public boolean existeMedidaConOtroId(String nombre, String abreviacion, int idActual) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM unidad_medida WHERE (LOWER(nombre_medida) = LOWER(?) OR LOWER(abreviacion) = LOWER(?)) AND id_medida != ?";
+    try (Connection conn = conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre.trim());
+        ps.setString(2, abreviacion.trim());
+        ps.setInt(3, idActual);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    }
+    return false;
+}
+    public boolean existeMedida(String nombre, String abreviacion) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM unidad_medida WHERE LOWER(nombre_medida) = LOWER(?) OR LOWER(abreviacion) = LOWER(?)";
+    try (Connection conn = conexion.getConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, nombre.trim());
+        ps.setString(2, abreviacion.trim());
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+    }
+    return false;
+}
     //insertar
     public String insert(Medida medida) throws SQLException {
 
@@ -225,4 +251,4 @@ listaMedida.setAbreviacion(rs.getString("abreviacion"));
 
         return listarCombo;
     }
-    
+}
