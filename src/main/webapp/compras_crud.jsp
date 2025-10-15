@@ -26,11 +26,18 @@
             </div>
             <nav class="menu">
                 <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
-                <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
-                <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
-                <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
-                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
-                <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
+    <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
+    <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
+    <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
+    <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
+    <a href="frmRol.jsp"><i class="fas fa-user-tag"></i> <span>Roles</span></a>
+<a href="Unidad_Medida_crud.jsp"><i class="fas fa-ruler-combined"></i> <span>Unidad de Medida</span></a>
+<a href="marca_crud.jsp"><i class="fas fa-stamp"></i> <span>Marca</span></a>
+    <a href="compras_crud.jsp"><i class="fas fa-shopping-cart"></i> <span>Compras</span></a>
+<a href="frmInventario.jsp"><i class="fas fa-warehouse"></i> <span>Inventario</span></a>
+<a href="productos_crud.jsp"><i class="fas fa-cubes"></i> <span>Productos</span></a>
+<a href="vistaEscaneos.jsp"><i class="fas fa-barcode"></i> <span>Productos Escaneados</span></a>
+<a href="Backup.jsp"><i class="fas fa-database"></i> <span>Backup</span></a>
             </nav>
         </aside>
 

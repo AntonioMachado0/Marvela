@@ -47,7 +47,15 @@
                 <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
                 <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
                 <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
-                <a href="frmRol.jsp"><i class="fas fa-user-shield"></i> <span>Roles</span></a>
+                <a href="frmRol.jsp"><i class="fas fa-user-tag"></i> <span>Roles</span></a>
+                <a href="Unidad_Medida_crud.jsp"><i class="fas fa-ruler-combined"></i> <span>Unidad de Medida</span></a>
+                <a href="marca_crud.jsp"><i class="fas fa-stamp"></i> <span>Marca</span></a>
+                <a href="compras_crud.jsp"><i class="fas fa-shopping-cart"></i> <span>Compras</span></a>
+                
+                <a href="frmInventario.jsp"><i class="fas fa-warehouse"></i> <span>Inventario</span></a>
+                <a href="productos_crud.jsp"><i class="fas fa-cubes"></i> <span>Productos</span></a>
+                <a href="vistaEscaneos.jsp"><i class="fas fa-barcode"></i> <span>Productos Escaneados</span></a>
+                <a href="Backup.jsp"><i class="fas fa-database"></i> <span>Backup</span></a>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
             </nav>
         </aside>
@@ -87,7 +95,7 @@
 
             </header>
 
-                   <div class="modal fade" id="myModal" tabindex="-1">
+            <div class="modal fade" id="myModal" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header bg-success text-white">
@@ -626,68 +634,69 @@
         </script>
 
 
-      <script>
-async function imprimirPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+        <script>
+            async function imprimirPDF() {
+                const {jsPDF} = window.jspdf;
+                const doc = new jsPDF();
 
-    const valor = document.getElementById("codigo_producto").value || "?";
-    const cantidad = parseInt(document.getElementById("cantidad").value) || 1;
+                const valor = document.getElementById("codigo_producto").value || "?";
+                const cantidad = parseInt(document.getElementById("cantidad").value) || 1;
 
-    const etiquetasPorFila = 4;
-    const etiquetaAncho = 45;
-    const etiquetaAlto = 30;
-    const espacioX = 10; // espacio entre etiquetas
-    const espacioY = 40;
-    const margenSuperior = 15;
+                const etiquetasPorFila = 4;
+                const etiquetaAncho = 45;
+                const etiquetaAlto = 30;
+                const espacioX = 10; // espacio entre etiquetas
+                const espacioY = 40;
+                const margenSuperior = 15;
 
-    const paginaAncho = doc.internal.pageSize.getWidth();
-    const filaAnchoTotal = etiquetasPorFila * etiquetaAncho + (etiquetasPorFila - 1) * espacioX;
-    const margenIzquierdo = (paginaAncho - filaAnchoTotal) / 2;
+                const paginaAncho = doc.internal.pageSize.getWidth();
+                const filaAnchoTotal = etiquetasPorFila * etiquetaAncho + (etiquetasPorFila - 1) * espacioX;
+                const margenIzquierdo = (paginaAncho - filaAnchoTotal) / 2;
 
-    let etiquetaGenerada = 0;
+                let etiquetaGenerada = 0;
 
-    while (etiquetaGenerada < cantidad) {
-        for (let fila = 0; fila < Math.ceil(cantidad / etiquetasPorFila); fila++) {
-            for (let columna = 0; columna < etiquetasPorFila; columna++) {
-                if (etiquetaGenerada >= cantidad) break;
+                while (etiquetaGenerada < cantidad) {
+                    for (let fila = 0; fila < Math.ceil(cantidad / etiquetasPorFila); fila++) {
+                        for (let columna = 0; columna < etiquetasPorFila; columna++) {
+                            if (etiquetaGenerada >= cantidad)
+                                break;
 
-                const x = margenIzquierdo + columna * (etiquetaAncho + espacioX);
-                const y = margenSuperior + fila * espacioY;
+                            const x = margenIzquierdo + columna * (etiquetaAncho + espacioX);
+                            const y = margenSuperior + fila * espacioY;
 
-                const canvas = document.createElement("canvas");
-                canvas.width = 400;
-                canvas.height = 120;
-                const ctx = canvas.getContext("2d");
-                ctx.scale(2, 2);
+                            const canvas = document.createElement("canvas");
+                            canvas.width = 400;
+                            canvas.height = 120;
+                            const ctx = canvas.getContext("2d");
+                            ctx.scale(2, 2);
 
-                JsBarcode(canvas, valor, {
-                    format: "CODE128",
-                    lineColor: "#000",
-                    width: 2.5,
-                    height: 60,
-                    displayValue: true,
-                    fontSize: 14,
-                    textMargin: 2
-                });
+                            JsBarcode(canvas, valor, {
+                                format: "CODE128",
+                                lineColor: "#000",
+                                width: 2.5,
+                                height: 60,
+                                displayValue: true,
+                                fontSize: 14,
+                                textMargin: 2
+                            });
 
-                const imgData = canvas.toDataURL("image/png");
+                            const imgData = canvas.toDataURL("image/png");
 
-                if (y + etiquetaAlto > doc.internal.pageSize.height) {
-                    doc.addPage();
-                    fila = -1;
-                    break;
+                            if (y + etiquetaAlto > doc.internal.pageSize.height) {
+                                doc.addPage();
+                                fila = -1;
+                                break;
+                            }
+
+                            doc.addImage(imgData, "PNG", x, y, etiquetaAncho, etiquetaAlto);
+                            etiquetaGenerada++;
+                        }
+                    }
                 }
 
-                doc.addImage(imgData, "PNG", x, y, etiquetaAncho, etiquetaAlto);
-                etiquetaGenerada++;
+                doc.save("codigos.pdf");
             }
-        }
-    }
-
-    doc.save("codigos.pdf");
-}
-</script>
+        </script>
         <script>
             const codigoCompra = "<%= request.getParameter("codigo_compra")%>";
             console.log("Código de compra recibido:", codigoCompra);
@@ -709,13 +718,13 @@ async function imprimirPDF() {
             });
         </script>
 
-<script>
-document.getElementById("porcentaje").addEventListener("keydown", function (e) {
-  if (e.key === "." || e.key === "," || e.key === "Decimal") {
-    e.preventDefault(); //  Bloquea punto y coma decimal
-  }
-});
-</script>
+        <script>
+            document.getElementById("porcentaje").addEventListener("keydown", function (e) {
+                if (e.key === "." || e.key === "," || e.key === "Decimal") {
+                    e.preventDefault(); //  Bloquea punto y coma decimal
+                }
+            });
+        </script>
     </body>
     <div id="toast" class="toast">Guardado correctamente ?</div>
 </html>

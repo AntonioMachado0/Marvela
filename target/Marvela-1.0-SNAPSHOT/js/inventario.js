@@ -98,17 +98,18 @@ function mostrarInventario(datosPorFecha) {
                         <table class="table table-striped table-hover mb-0" id="tabla-${fechaId}">
                             <thead class="encabezado-verde">
                                 <tr>
-                                    <th style="font-size:12px;"><i class="fas fa-image"></i> IMAGEN</th>
-                                   <th style="font-size:12px;"><i class="fas fa-barcode"></i> CÓDIGO</th>
-                                   <th style="font-size:12px;"><i class="fas fa-cube"></i> PRODUCTO</th>
-                                   <th style="font-size:12px;"><i class="fas fa-tag"></i> MARCA</th>
-                                   <th style="font-size:12px;"><i class="fas fa-balance-scale"></i> CANTIDAD</th>
-                                   <th style="font-size:12px;"><i class="fas fa-ruler"></i> MEDIDA</th>
-                                   <th style="font-size:12px;"><i class="fas fa-dollar-sign"></i> PRECIO VENTA</th>
-                                    <th style="font-size:12px;"><i class="fas fa-calendar-times"></i> VENCIMIENTO</th>
-<th style="width: 65px; text-align: center; font-size:12px; padding-left:0; padding-right:0;">
+                                    <th style="font-size:12px; color:white;"><i class="fas fa-image"></i> IMAGEN</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-barcode"></i> CÓDIGO</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-cube"></i> PRODUCTO</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-tag"></i> MARCA</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-balance-scale"></i> CANTIDAD</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-ruler"></i> MEDIDA</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-dollar-sign"></i> PRECIO VENTA</th>
+                                  <th style="font-size:12px; color:white;"><i class="fas fa-calendar-times"></i> VENCIMIENTO</th>
+<th style="width: 65px; color:white; text-align: center; font-size:12px; padding-left:0; padding-right:0;">
   IMPRIMIR
 </th>
+        
         
                                 </tr>
                             </thead>
@@ -162,7 +163,7 @@ function mostrarInventario(datosPorFecha) {
             }
             const productoCodificado = btoa(unescape(encodeURIComponent(JSON.stringify(producto))));
 
-const botonDetalle = `<button class="btn btn-sm btn-outline-primary ver-detalle" data-producto="${productoCodificado}" title="Imprimir etiqueta">
+const botonDetalle = `<button class="btn btn-sm btn-outline-success ver-detalle" data-producto="${productoCodificado}" title="Imprimir etiqueta">
   <i class="fas fa-print"></i>
 </button>`;
 
@@ -204,8 +205,8 @@ const botonDetalle = `<button class="btn btn-sm btn-outline-primary ver-detalle"
         // Inicializar DataTable para esta tabla
         $(`#tabla-${fechaId}`).DataTable({
             "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json"
-            },
+                "url": "https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json"
+                },
             "pageLength": 10,
             "responsive": true,
             "dom": '<"top"lf>rt<"bottom"ip><"clear">',
