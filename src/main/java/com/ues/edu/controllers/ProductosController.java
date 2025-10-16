@@ -4,6 +4,7 @@
  */
 package com.ues.edu.controllers;
 
+import static com.ues.edu.connection.Conexion.getConnection;
 import com.ues.edu.models.Categoria;
 import com.ues.edu.models.Compras;
 import com.ues.edu.models.Marca;
@@ -23,6 +24,9 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -172,112 +176,6 @@ public class ProductosController extends HttpServlet {
                 break;
             }
 
-//            case "insertar": {
-//                String resultado_insert = "";
-//                try {
-//                    // 🧾 Validación: nombre de producto
-//                    String nombre_producto = request.getParameter("nombre_producto");
-//                    if (nombre_producto == null || nombre_producto.trim().isEmpty()) {
-//                        jsonObjet.put("resultado", "error_parametro");
-//                        jsonObjet.put("detalle", "El nombre del producto está vacío o no fue enviado.");
-//                        jsonArray.put(jsonObjet);
-//                        response.setContentType("application/json");
-//                        response.getWriter().write(jsonArray.toString());
-//                        break;
-//                    }
-//                    catIns.setNombre(nombre_producto.trim());
-//
-//                    // 🧾 Validación: descripción
-//                    String descripcion = request.getParameter("descripcion");
-//                    if (descripcion == null || descripcion.trim().isEmpty()) {
-//                        jsonObjet.put("resultado", "error_parametro");
-//                        jsonObjet.put("detalle", "La descripción está vacía o no fue enviada.");
-//                        jsonArray.put(jsonObjet);
-//                        response.setContentType("application/json");
-//                        response.getWriter().write(jsonArray.toString());
-//                        break;
-//                    }
-//                    catIns.setDescripcion(descripcion.trim());
-//
-//                    // 🖼️ Validación: imagen
-//                    Part imagenPart = request.getPart("imagen");
-//                    if (imagenPart == null || imagenPart.getSize() == 0) {
-//                        jsonObjet.put("resultado", "error_parametro");
-//                        jsonObjet.put("detalle", "La imagen del producto está vacía o no fue enviada.");
-//                        jsonArray.put(jsonObjet);
-//                        response.setContentType("application/json");
-//                        response.getWriter().write(jsonArray.toString());
-//                        break;
-//                    }
-//
-//                    String tipoMime = imagenPart.getContentType();
-//                    if (!tipoMime.startsWith("image/")) {
-//                        jsonObjet.put("resultado", "error_parametro");
-//                        jsonObjet.put("detalle", "El archivo enviado no es una imagen válida.");
-//                        jsonArray.put(jsonObjet);
-//                        response.setContentType("application/json");
-//                        response.getWriter().write(jsonArray.toString());
-//                        break;
-//                    }
-//
-//                    // 🗂️ Guardado físico de imagen
-//                    String nombreArchivo = Paths.get(imagenPart.getSubmittedFileName()).getFileName().toString();
-//                    String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf('.') + 1).toLowerCase();
-//                    String nombreFinal = "prod_" + System.currentTimeMillis() + "." + extension;
-//
-//                    // ✅ Carpeta pública accesible desde navegador
-//                    String rutaImagenes = getServletContext().getRealPath("/img/imagenes_productos/");
-//                    File carpeta = new File(rutaImagenes);
-//                    if (!carpeta.exists()) {
-//                        carpeta.mkdirs();
-//                    }
-//
-//                    File archivoImagen = new File(carpeta, nombreFinal);
-//                    try ( InputStream input = imagenPart.getInputStream()) {
-//                        Files.copy(input, archivoImagen.toPath(), StandardCopyOption.REPLACE_EXISTING);
-//                    }
-//
-//                    // ✅ Ruta relativa para mostrar en frontend
-//                    byte[] imagenBytes = imagenPart.getInputStream().readAllBytes();
-//                    catIns.setImagen(imagenBytes);
-//
-//                    // 📋 Validación: categoría
-//                    String codigoCategoriaStr = request.getParameter("codigo_categoria");
-//                    if (codigoCategoriaStr == null || codigoCategoriaStr.trim().isEmpty()) {
-//                        jsonObjet.put("resultado", "error_parametro");
-//                        jsonObjet.put("detalle", "El código de categoría está vacío o no fue enviado.");
-//                        jsonArray.put(jsonObjet);
-//                        response.setContentType("application/json");
-//                        response.getWriter().write(jsonArray.toString());
-//                        break;
-//                    }
-//                    Categoria cate = new Categoria();
-//                    cate.setCodigoCategoria(Integer.parseInt(codigoCategoriaStr.trim()));
-//                    catIns.setCategoria(cate);
-//
-//                    // 🧩 Inserción en base de datos
-//                    resultado_insert = comprasDao.insert(catIns);
-//                    if ("exito".equals(resultado_insert)) {
-//                        jsonObjet.put("resultado", "exito");
-//                        jsonObjet.put("nombre_producto", catIns.getNombre());
-//                        jsonObjet.put("imagen", catIns.getImagen());
-//                    } else {
-//                        jsonObjet.put("resultado", "error");
-//                        jsonObjet.put("detalle", resultado_insert);
-//                    }
-//
-//                } catch (SQLException e) {
-//                    jsonObjet.put("resultado", "error_sql");
-//                    jsonObjet.put("error_mostrado", e.getMessage());
-//                    System.out.println("Error SQL: " + e.getErrorCode());
-//                }
-//
-//                // 📤 Respuesta JSON final
-//                jsonArray.put(jsonObjet);
-//                response.setContentType("application/json");
-//                response.getWriter().write(jsonArray.toString());
-//                break;
-//            }
             case "insertar": {
                 String resultado_insert = "";
                 try {
@@ -300,7 +198,7 @@ public class ProductosController extends HttpServlet {
                         response.getWriter().write(jsonArray.toString());
                         break;
                     }
-                     catIns.setNombre(nombre_producto.trim());
+                    catIns.setNombre(nombre_producto.trim());
                     // 🧾 Validación: descripción
                     String descripcion = request.getParameter("descripcion");
                     if (descripcion == null || descripcion.trim().isEmpty()) {
@@ -432,69 +330,89 @@ public class ProductosController extends HttpServlet {
                 break;
             }
 
+            case "editar": {
+                JSONArray array_nombre_update = new JSONArray();
+                JSONObject json_nombre_update = new JSONObject();
+                String resultado_update = "";
 
-case "editar": {
-    JSONArray array_nombre_update = new JSONArray();
-    JSONObject json_nombre_update = new JSONObject();
-    String resultado_update = "";
+                Productos catUpdate = new Productos();
+                Categoria empleado = new Categoria();
+                Marca pro = new Marca();
+                Medida pros = new Medida();
 
-    Productos catUpdate = new Productos();
-    Categoria empleado = new Categoria();
-    Marca pro = new Marca();
-    Medida pros = new Medida();
+                try {
+                    ProductoDao catDao = new ProductoDao();
 
-    try {
-        ProductoDao catDao = new ProductoDao();
+                    int idProducto = Integer.parseInt(request.getParameter("id_producto"));
+                    String nuevoNombre = request.getParameter("nombre_producto");
 
-        int idProducto = Integer.parseInt(request.getParameter("id_producto"));
-        String nuevoNombre = request.getParameter("nombre_producto");
+                    // 🔍 Validación de duplicado
+                    if (catDao.existeProductoConOtroId(nuevoNombre.trim(), idProducto)) {
+                        json_nombre_update.put("resultado", "duplicado");
+                        json_nombre_update.put("mensaje", "Ya existe otro producto con ese nombre.");
+                    } else {
+                        catUpdate.setIdProducto(idProducto);
+                        catUpdate.setNombre(nuevoNombre.trim());
+                        catUpdate.setDescripcion(request.getParameter("descripcion"));
 
-        // 🔍 Validación de duplicado
-        if (catDao.existeProductoConOtroId(nuevoNombre.trim(), idProducto)) {
-            json_nombre_update.put("resultado", "duplicado");
-            json_nombre_update.put("mensaje", "Ya existe otro producto con ese nombre.");
-        } else {
-            catUpdate.setIdProducto(idProducto);
-            catUpdate.setNombre(nuevoNombre.trim());
-            catUpdate.setDescripcion(request.getParameter("descripcion"));
+                        Part filePart = request.getPart("imagen");
+                        byte[] imagenBytes;
 
-            Part filePart = request.getPart("imagen");
-            byte[] imagenBytes = null;
+                        if (filePart != null && filePart.getSize() > 0) {
+                            try ( InputStream inputStream = filePart.getInputStream()) {
+                                imagenBytes = inputStream.readAllBytes();
+                            }
+                        } else {
+                            // 🧠 Si no se sube imagen, recuperar la actual desde la BD
+                            Productos productoActual = catDao.cargarDatos(new Productos() {
+                                {
+                                    setIdProducto(idProducto);
+                                }
+                            });
+                            imagenBytes = productoActual.getImagen();
+                        }
 
-            if (filePart != null && filePart.getSize() > 0) {
-                try (InputStream inputStream = filePart.getInputStream()) {
-                    imagenBytes = inputStream.readAllBytes();
+                        catUpdate.setImagen(imagenBytes);
+
+                        empleado.setCodigoCategoria(Integer.parseInt(request.getParameter("codigo_categoria")));
+                        catUpdate.setCategoria(empleado);
+
+                        resultado_update = catDao.update(catUpdate);
+
+                        if ("exito".equals(resultado_update)) {
+                            json_nombre_update.put("resultado", "exito");
+                            json_nombre_update.put("nombre_producto", catUpdate.getNombre());
+                        } else {
+                            json_nombre_update.put("resultado", "error");
+                            json_nombre_update.put("resultado_insertar", resultado_update);
+                        }
+                    }
+
+                } catch (SQLException e) {
+                    json_nombre_update.put("resultado", "error_sql");
+                    System.out.println("Error Code error:" + e.getErrorCode());
+                    throw new RuntimeException("Error al editar producto", e);
                 }
-            }
 
-            catUpdate.setImagen(imagenBytes);
-
-            empleado.setCodigoCategoria(Integer.parseInt(request.getParameter("codigo_categoria")));
-            catUpdate.setCategoria(empleado);
-
-            resultado_update = catDao.update(catUpdate);
-
-            if ("exito".equals(resultado_update)) {
-                json_nombre_update.put("resultado", "exito");
-                json_nombre_update.put("nombre_producto", catUpdate.getNombre());
-            } else {
-                json_nombre_update.put("resultado", "error");
-                json_nombre_update.put("resultado_insertar", resultado_update);
+                array_nombre_update.put(json_nombre_update);
+                response.getWriter().write(array_nombre_update.toString());
+                break;
             }
         }
 
-    } catch (SQLException e) {
-        json_nombre_update.put("resultado", "error_sql");
-        System.out.println("Error Code error:" + e.getErrorCode());
-        throw new RuntimeException("Error al editar producto", e);
     }
 
-    array_nombre_update.put(json_nombre_update);
-    response.getWriter().write(array_nombre_update.toString());
-    break;
-}
+    public byte[] obtenerImagenPorId(int idProducto) throws SQLException {
+        byte[] imagen = null;
+        String sql = "SELECT imagen FROM productos WHERE id_producto = ?";
+        try ( Connection conn = getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idProducto);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                imagen = rs.getBytes("imagen");
+            }
         }
-
+        return imagen;
     }
 
     /**

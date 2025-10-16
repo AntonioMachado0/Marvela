@@ -13,7 +13,7 @@ import com.ues.edu.models.dao.EmpleadoDao;
 import com.ues.edu.models.dao.ProveedorDao;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,7 +64,7 @@ public class ComprasController extends HttpServlet {
         String filtro = request.getParameter("consultar_datos");
         Compras catIns = new Compras();
         JSONArray array_mostrarCompra = new JSONArray(); // ← Solo si no existe antes
-    JSONObject json_mostrarCompra = new JSONObject();
+        JSONObject json_mostrarCompra = new JSONObject();
 
         JSONObject jsonObjet = new JSONObject(); // ← única declaración aqu
         JSONArray jsonArray = new JSONArray();
@@ -77,68 +77,86 @@ public class ComprasController extends HttpServlet {
         switch (filtro) {
             case "mostrar":
 
-                String html1 = "";
-                String estadoM = request.getParameter("estado");
+    String html1 = "";
+    String estadoM = request.getParameter("estado");
 
-                try {
-                    System.out.println("ENTRO");
-                    ComprasDao obaut = new ComprasDao();
-                    this.listaCompraActividad = new ArrayList<>();
-                    System.out.println("ENTRO 2");
-                    this.listaCompra2 = obaut.selectAllCompra(Integer.valueOf(estadoM), "todos");
-                    System.out.println("ENTRO 3");
+    try {
+        ComprasDao obaut = new ComprasDao();
+        this.listaCompraActividad = new ArrayList<>();
+        this.listaCompra2 = obaut.selectAllCompra(Integer.valueOf(estadoM), "todos");
 
-                    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaActual = new Date();
 
-                    html1 += "<div class=\"tabla_listCom\">"
-                            + "<table id=\"tabla_listCom\" class=\"table table-hover datanew\">"
-                            + "<thead>"
-                            + "<tr class=\"mb-2 green text-center\">"
-                            + "<th class=\"text-center\" style=\"color: white !important;\">NÚMERO DE ORDEN</th>"
-                            + "<th class=\"text-center\" style=\"color: white !important;\">FECHA</th>"
-                            + "<th class=\"text-center\" style=\"color: white !important;\">PROVEEDOR</th>"
-                            + "<th class=\"text-center\" style=\"color: white !important;\">EMPLEADO</th>"
-                            + "<th class=\"text-center\" style=\"color: white !important;\">ACCIÓN</th>"
-                            + "</tr>"
-                            + "</thead>"
-                            + "<tbody>";
+        html1 += "<div class=\"tabla_listCom\">"
+                + "<table id=\"tabla_listCom\" class=\"table table-hover datanew\">"
+                + "<thead>"
+                + "<tr class=\"mb-2 green text-center\">"
+                + "<th class=\"text-center\" style=\"color: white !important;\">NÚMERO DE ORDEN</th>"
+                + "<th class=\"text-center\" style=\"color: white !important;\">FECHA</th>"
+                + "<th class=\"text-center\" style=\"color: white !important;\">PROVEEDOR</th>"
+                + "<th class=\"text-center\" style=\"color: white !important;\">EMPLEADO</th>"
+                + "<th class=\"text-center\" style=\"color: white !important;\">ESTADO</th>"
+                + "<th class=\"text-center\" style=\"color: white !important;\">ACCIÓN</th>"
+                + "</tr>"
+                + "</thead>"
+                + "<tbody>";
 
-                    System.out.println("ENTRO 4");
+        for (Compras obj : listaCompra2) {
+            String fechaFormateada = formatoFecha.format(obj.getFechaCompra());
 
-                    for (Compras obj : listaCompra2) {
-                        String fechaFormateada = formatoFecha.format(obj.getFechaCompra());
+            long diferenciaMillis = fechaActual.getTime() - obj.getFechaCompra().getTime();
+            long diasPasados = diferenciaMillis / (1000 * 60 * 60 * 24);
+            boolean vencida = diasPasados >= 3;
+            long diasRestantes = Math.max(0, 3 - diasPasados);
 
-                        html1 += "<tr class=\"text-center\">";
-                        html1 += "<td class=\"text-center\">" + obj.getNumeroOrden() + "</td>";
-                        html1 += "<td class=\"text-center\">" + fechaFormateada + "</td>";
-                        html1 += "<td class=\"text-center\">" + obj.getProveedores().getNombreProveedor() + "</td>";
-                        html1 += "<td class=\"text-center\">" + obj.getEmpleado().getNombreCompleto() + "</td>";
-                        html1 += "<td>"
-                                + "<button class='btn btn-success btn_editar' data-id='" + obj.getIdCompra() + "'>"
-                                + "<i class='fas fa-edit'></i></button>"
-                                + "       "
+            html1 += "<tr class=\"text-center\">";
+            html1 += "<td class=\"text-center\">" + obj.getNumeroOrden() + "</td>";
+            html1 += "<td class=\"text-center\">" + fechaFormateada + "</td>";
+            html1 += "<td class=\"text-center\">" + obj.getProveedores().getNombreProveedor() + "</td>";
+            html1 += "<td class=\"text-center\">" + obj.getEmpleado().getNombreCompleto() + "</td>";
 
-//                         
-                                + "<button class='btn btn-success' onclick=\"window.location.href='detalle_producto_crud.jsp?codigo_compra=" + obj.getIdCompra() + "&numero_de_orden=" + obj.getNumeroOrden() + "'\">" 
-+ "<i class='fas fa-circle-plus'></i></button>"
-                                + "</td>";
-                        html1 += "</tr>";
-                    }
+            // Estado con mensaje superior en letras negras
+            html1 += "<td class=\"text-center\">";
+            if (!vencida) {
+                html1 += "<div style='font-size: 0.8em; color: black;'>Restan " + diasRestantes + " día(s)</div>";
+                html1 += "<span style='color:green;'><i class='fas fa-play-circle'></i> <span style='color:black;'>En proceso</span></span>";
+            } else {
+                html1 += "<div style='font-size: 0.8em; color: black;'>Plazo vencido</div>";
+                html1 += "<span style='color:red;'><i class='fas fa-lock'></i> <span style='color:black;'>Finalizada</span></span>";
+            }
+            html1 += "</td>";
 
-                    html1 += "</tbody></table></div>";
-                    json_mostrarCompra.put("resultado", "exito");
-                    json_mostrarCompra.put("tabla", html1);
+            // Botones
+            html1 += "<td>";
+            html1 += "<button class='btn btn-success btn_editar' data-id='" + obj.getIdCompra() + "'>"
+                    + "<i class='fas fa-edit'></i></button> ";
 
-                } catch (Exception ex) {
-                    Logger.getLogger(ComprasController.class.getName()).log(Level.SEVERE, null, ex);
-                    json_mostrarCompra.put("resultado", "error");
-                    json_mostrarCompra.put("mensaje", ex.getMessage());
-                }
+            if (!vencida) {
+                html1 += "<button class='btn btn-success' onclick=\"window.location.href='detalle_producto_crud.jsp?codigo_compra=" + obj.getIdCompra() + "&numero_de_orden=" + obj.getNumeroOrden() + "'\">"
+                        + "<i class='fas fa-circle-plus'></i></button>";
+            } else {
+                html1 += "<button class='btn btn-secondary' onclick=\"alert('Ya pasó el tiempo límite para añadir productos a esta orden.')\" title='Orden finalizada'>"
+                        + "<i class='fas fa-ban'></i></button>";
+            }
 
-                array_mostrarCompra.put(json_mostrarCompra);
-                response.getWriter().write(array_mostrarCompra.toString());
+            html1 += "</td></tr>";
+        }
 
-                break;
+        html1 += "</tbody></table></div>";
+        json_mostrarCompra.put("resultado", "exito");
+        json_mostrarCompra.put("tabla", html1);
+
+    } catch (Exception ex) {
+        Logger.getLogger(ComprasController.class.getName()).log(Level.SEVERE, null, ex);
+        json_mostrarCompra.put("resultado", "error");
+        json_mostrarCompra.put("mensaje", ex.getMessage());
+    }
+
+    array_mostrarCompra.put(json_mostrarCompra);
+    response.getWriter().write(array_mostrarCompra.toString());
+
+    break;
             case "cargarCombo": {
                 ArrayList<Proveedores> listPro = new ArrayList();
                 ProveedorDao proDao = null;
@@ -384,7 +402,7 @@ public class ComprasController extends HttpServlet {
                 response.getWriter().write(array_nombre_update.toString());
                 break;
             }
- 
+
         }
     }
 
