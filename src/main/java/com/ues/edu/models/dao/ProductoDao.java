@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import com.ues.edu.connection.Conexion;
+import static com.ues.edu.connection.Conexion.getConnection;
 import com.ues.edu.models.Categoria;
 import com.ues.edu.models.Marca;
 import com.ues.edu.models.Medida;
@@ -251,6 +252,19 @@ public class ProductoDao {
         }
         return false;
     }
+    public byte[] obtenerImagenPorId(int idProducto) throws SQLException {
+    byte[] imagen = null;
+    String sql = "SELECT imagen FROM productos WHERE id_producto = ?";
+    try (Connection conn = getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setInt(1, idProducto);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            imagen = rs.getBytes("imagen");
+        }
+    }
+    return imagen;
+}
 
     private ArrayList<Productos> listProveedor;
     private ArrayList<Productos> listarCombo;

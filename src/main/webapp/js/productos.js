@@ -84,7 +84,7 @@ $(function () {
             $("#formulario_editar")[0].reset();
             $("#myModalE").modal("hide");
 
-            mensaje("Producto guardado", "Se modificó correctamente", "success");
+            mensaje("Producto Modificado", "Se modificó correctamente", "success");
 
             // ✅ Refrescar tabla con anti-caché en imágenes
             cargarTablaDespuesDeEditar(); // ← función especializada
