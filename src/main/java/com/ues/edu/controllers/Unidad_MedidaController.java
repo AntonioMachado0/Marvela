@@ -75,9 +75,9 @@ public class Unidad_MedidaController extends HttpServlet {
                             + "<thead>"
                             + "<tr class=\"mb-2 green text-center\">"
                             // + "<th class=\"text-center\" style=\" color: white !important;\">N</th>"
-                            + "<th class=\"text-center\" style=\" color: white !important;\">Medida</th>"
-                            + "<th class=\"text-center\" style=\" color: white !important;\">Abreviatura</th>"
-                            + "<th class=\"text-center\" style=\" color: white !important;\">ACCION</th>"
+                            + "<th class=\"text-center\" style=\" color: white !important;\">MEDIDA</th>"
+                            + "<th class=\"text-center\" style=\" color: white !important;\">ABREVIACIÓN</th>"
+                            + "<th class=\"text-center\" style=\" color: white !important;\">ACCIÓN</th>"
                             + "</tr>"
                             + "</thead>"
                             + "<tbody>";
