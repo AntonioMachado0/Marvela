@@ -176,5 +176,52 @@ System.out.println("ENTRO AL METODO DAO MOSTRAR 22");
 
         return listarCombo;
     }
+     public ArrayList<Empleado> listarCombos;
+    private static final String CARGAR_COMBO_EMPLEADOS = "SELECT a.codigo_empleado, a.nombre_completo\n"
+            + "FROM empleado a\n"
+            + "LEFT JOIN usuario u ON a.codigo_empleado = u.codigo_empleado\n"
+            + "WHERE u.codigo_empleado IS NULL";
+
+    public ArrayList<Empleado> cargarComboEmpleados() throws SQLException {
+        listarCombo = new ArrayList();
+        System.out.println("ENTRO AL METODO DAO MOSTRAR");
+        try {
+            this.accesoDB = this.conexion.getConexion();
+            this.ps = this.accesoDB.prepareStatement(CARGAR_COMBO_EMPLEADOS);
+            this.rs = this.ps.executeQuery();
+            System.out.println("ENTRO AL METODO DAO MOSTRAR 22");
+            Empleado c = null;
+            while (this.rs.next()) {
+                c = new Empleado();
+                c.setCodigoEmpleado(rs.getInt("codigo_empleado"));
+                c.setNombreCompleto(rs.getString("nombre_completo"));
+                listarCombo.add(c);
+            }
+            conexion.cerrarConexiones();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return listarCombo;
+    }
+    public Empleado obtenerEmpleadoPorCodigo(int codigo) throws SQLException {
+    Empleado emp = null;
+    String sql = "SELECT codigo_empleado, nombre_completo FROM empleado WHERE codigo_empleado = ?";
+    try {
+        this.accesoDB = this.conexion.getConexion();
+        this.ps = this.accesoDB.prepareStatement(sql);
+        this.ps.setInt(1, codigo);
+        this.rs = this.ps.executeQuery();
+        if (this.rs.next()) {
+            emp = new Empleado();
+            emp.setCodigoEmpleado(rs.getInt("codigo_empleado"));
+            emp.setNombreCompleto(rs.getString("nombre_completo"));
+        }
+        conexion.cerrarConexiones();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "ERROR" + e, "ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    return emp;
+}
 
 }

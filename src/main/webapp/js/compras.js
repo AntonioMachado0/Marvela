@@ -36,118 +36,156 @@ $(function () {
       limpiarError(this);
     }
   });
-
-  $(document).on("submit", "#formulario_insert", function (e) {
-    e.preventDefault();
-
-    const numero_de_orden = $("#numero_de_orden").val();
-    const fecha_de_orden_raw = $("#fecha_de_orden").val();
-    const codigo_empleado = $("#codigo_empleado").val();
-    const codigo_proveedor = $("#codigo_proveedor").val();
-
-    limpiarError("#numero_de_orden");
-
-    if (!numero_de_orden || !fecha_de_orden_raw || codigo_empleado === "0" || codigo_proveedor === "0") {
-      Swal.fire('Campos incompletos', 'Por favor complete todos los campos obligatorios.', 'warning');
-      return;
-    }
-
-    if (!esNumeroDeOrdenValido(numero_de_orden)) {
-      marcarError("#numero_de_orden");
-      Swal.fire('Numero de orden incorrecto', 'Debe contener solo numeros y guiones, y al menos tres dígitos.', 'warning');
-      return;
-    }
-
-    if (!esFechaDelMesActualOHoy(fecha_de_orden_raw)) {
-      Swal.fire('Fecha incorrecta', 'Ingrese una fecha correcta del mes actual. No se permiten fechas futuras.', 'warning');
-      return;
-    }
-
-    let fecha_de_orden = fecha_de_orden_raw;
-    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha_de_orden_raw)) {
-      const partes = fecha_de_orden_raw.split("-");
-      fecha_de_orden = `${partes[2]}/${partes[1]}/${partes[0]}`;
-    }
-
-    const datos = {
-      "consultar_datos": "insertar",
-      "numero_de_orden": numero_de_orden,
-      "fecha_de_orden": fecha_de_orden,
-      "codigo_empleado": codigo_empleado,
-      "codigo_proveedor": codigo_proveedor
-    };
-
-    $.ajax({
-      dataType: "json",
-      method: "POST",
-      url: "ComprasController",
-      data: datos
-    }).done(function (json) {
-      console.log("Respuesta de inserción:", json);
-
-      if (json[0]?.resultado === "exito") {
-        $("#numero_de_orden").val("").removeClass("input-error");
-        $("#fecha_de_orden").val("");
-        $("#codigo_empleado").val("0");
-        $("#codigo_proveedor").val("0");
-        $("#myModal").modal("hide");
-        cargarTabla();
-        mensaje("Excelente", "El dato fue agregado", "success");
-      } else if (json[0]?.resultado === "duplicado") {
-        marcarError("#numero_de_orden");
-        Swal.fire('Duplicado', 'Ya existe una orden con ese número.', 'error');
-      } else {
-        Swal.fire('Duplicado', "EL numero de orden ya existe", 'error');
-      }
-    }).fail(function () {
-      Swal.fire('Campo basio', 'No se pudo agregar.', 'error');
-    });
-  });
-
-//$(document).on("submit", "#formulario_editar", function (e) {
+//
+//  $(document).on("submit", "#formulario_insert", function (e) {
 //    e.preventDefault();
 //
-//    var codigo_compra = $("#codigo_compra").val();
-//    console.log("Código de compra enviado:", $("#codigo_compra").val());
-//    var numero_de_orden = $("#numero_de_ordenE").val();
-//    var fecha_original = $("#fecha_de_ordenE").val(); // YYYY-MM-DD
-//    var codigo_empleado = $("#codigo_empleadoE").val();
-//    var codigo_proveedor = $("#codigo_proveedorE").val();
+//    const numero_de_orden = $("#numero_de_orden").val();
+//    const fecha_de_orden_raw = $("#fecha_de_orden").val();
+//    const codigo_empleado = $("#codigo_empleado").val();
+//    const codigo_proveedor = $("#codigo_proveedor").val();
 //
-//    // Convertir fecha a DD/MM/YYYY
-//    var fecha_convertida = "";
-//    if (fecha_original && fecha_original.includes("-")) {
-//        var partes = fecha_original.split("-");
-//        fecha_convertida = partes[2] + "/" + partes[1] + "/" + partes[0];
+//    limpiarError("#numero_de_orden");
+//
+//    if (!numero_de_orden || !fecha_de_orden_raw || codigo_empleado === "0" || codigo_proveedor === "0") {
+//      Swal.fire('Campos incompletos', 'Por favor complete todos los campos obligatorios.', 'warning');
+//      return;
 //    }
 //
-//    var datos = {
-//        "consultar_datos": "editar",
-//        "codigo_compra": codigo_compra,
-//        "numero_de_orden": numero_de_orden,
-//        "fecha_de_orden": fecha_convertida,
-//        "codigo_empleado": codigo_empleado,
-//        "codigo_proveedor": codigo_proveedor
+//    if (!esNumeroDeOrdenValido(numero_de_orden)) {
+//      marcarError("#numero_de_orden");
+//      Swal.fire('Numero de orden incorrecto', 'Debe contener solo numeros y guiones, y al menos tres dígitos.', 'warning');
+//      return;
+//    }
+//
+//    if (!esFechaDelMesActualOHoy(fecha_de_orden_raw)) {
+//      Swal.fire('Fecha incorrecta', 'Ingrese una fecha correcta. No se permiten fechas Pasadas y futuras.', 'warning');
+//      return;
+//    }
+//
+//    let fecha_de_orden = fecha_de_orden_raw;
+//    if (/^\d{4}-\d{2}-\d{2}$/.test(fecha_de_orden_raw)) {
+//      const partes = fecha_de_orden_raw.split("-");
+//      fecha_de_orden = `${partes[2]}/${partes[1]}/${partes[0]}`;
+//    }
+//
+//    const datos = {
+//      "consultar_datos": "insertar",
+//      "numero_de_orden": numero_de_orden,
+//      "fecha_de_orden": fecha_de_orden,
+//      "codigo_empleado": codigo_empleado,
+//      "codigo_proveedor": codigo_proveedor
 //    };
 //
 //    $.ajax({
-//        dataType: "json",
-//        method: "POST",
-//        url: "ComprasController",
-//        data: datos
+//      dataType: "json",
+//      method: "POST",
+//      url: "ComprasController",
+//      data: datos
 //    }).done(function (json) {
-//        if (json[0].resultado === "exito") {
-//            $("#formulario_editar")[0].reset();
-//            $("#myModalE").modal("hide");
-//            cargarTabla();
-//            mensaje("Excelente", "El dato fue modificado", "success");
-//        } else {
-//            Swal.fire('Acción no completada', "No se puede modificar la compra", "error");
-//        }
+//      console.log("Respuesta de inserción:", json);
+//
+//      if (json[0]?.resultado === "exito") {
+//        $("#numero_de_orden").val("").removeClass("input-error");
+//        $("#fecha_de_orden").val("");
+//        $("#codigo_empleado").val("0");
+//        $("#codigo_proveedor").val("0");
+//        $("#myModal").modal("hide");
+//        cargarTabla();
+//        mensaje("Excelente", "El dato fue agregado", "success");
+//      } else if (json[0]?.resultado === "duplicado") {
+//        marcarError("#numero_de_orden");
+//        Swal.fire('Duplicado', 'Ya existe una orden con ese número.', 'error');
+//      } else {
+//        Swal.fire('Duplicado', "EL numero de orden ya existe", 'error');
+//      }
 //    }).fail(function () {
-//        Swal.fire('Error de conexión', "No se pudo contactar al servidor", "error");
+//      Swal.fire('Campo basio', 'No se pudo agregar.', 'error');
 //    });
-//});
+//  });
+
+$(document).on("submit", "#formulario_insert", function (e) {
+  e.preventDefault();
+
+  const numero_de_orden = $("#numero_de_orden").val();
+  const fecha_de_orden_raw = $("#fecha_de_orden").val();
+  const codigo_empleado = $("#codigo_empleado").val();
+  const codigo_proveedor = $("#codigo_proveedor").val();
+
+  limpiarError("#numero_de_orden");
+
+  if (!numero_de_orden || !fecha_de_orden_raw || codigo_empleado === "0" || codigo_proveedor === "0") {
+    Swal.fire('Campos incompletos', 'Por favor complete todos los campos obligatorios.', 'warning');
+    return;
+  }
+
+  if (!esNumeroDeOrdenValido(numero_de_orden)) {
+    marcarError("#numero_de_orden");
+    Swal.fire('Número de orden incorrecto', 'Debe contener solo números y guiones, y al menos tres dígitos.', 'warning');
+    return;
+  }
+
+  if (!esFechaDelMesActualOHoy(fecha_de_orden_raw)) {
+    Swal.fire('Fecha incorrecta', 'Ingrese una fecha correcta. No se permiten fechas pasadas ni futuras.', 'warning');
+    return;
+  }
+
+  let fecha_de_orden = fecha_de_orden_raw;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(fecha_de_orden_raw)) {
+    const partes = fecha_de_orden_raw.split("-");
+    fecha_de_orden = `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  // ✅ Confirmación antes de enviar
+  Swal.fire({
+    title: '¿Desea guardar esta orden?',
+    html: `La fecha <b>${fecha_de_orden}</b> será registrada y no podrá modificarse.`,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, guardar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const datos = {
+        "consultar_datos": "insertar",
+        "numero_de_orden": numero_de_orden,
+        "fecha_de_orden": fecha_de_orden,
+        "codigo_empleado": codigo_empleado,
+        "codigo_proveedor": codigo_proveedor
+      };
+
+      $.ajax({
+        dataType: "json",
+        method: "POST",
+        url: "ComprasController",
+        data: datos
+      }).done(function (json) {
+        console.log("Respuesta de inserción:", json);
+
+        if (json[0]?.resultado === "exito") {
+          $("#numero_de_orden").val("").removeClass("input-error");
+//          $("#fecha_de_orden").val("");
+          $("#codigo_empleado").val("0");
+          $("#codigo_proveedor").val("0");
+          $("#myModal").modal("hide");
+          cargarTabla();
+          mensaje("Excelente", "El dato fue agregado", "success");
+          mensaje("Fecha registrada", `La fecha ${fecha_de_orden} fue guardada y no podrá ser modificada.`, "info");
+        } else if (json[0]?.resultado === "duplicado") {
+          marcarError("#numero_de_orden");
+          Swal.fire('Duplicado', 'Ya existe una orden con ese número.', 'error');
+        } else {
+          Swal.fire('Duplicado', "El número de orden ya existe", 'error');
+        }
+      }).fail(function () {
+        Swal.fire('Error', 'No se pudo agregar.', 'error');
+      });
+    } else {
+      Swal.fire('Cancelado', 'La orden no fue guardada.', 'info');
+    }
+  });
+});
+
 
 $(document).on("submit", "#formulario_editar", function (e) {
   e.preventDefault();
