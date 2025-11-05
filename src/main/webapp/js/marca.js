@@ -19,7 +19,7 @@ $(function () {
             } else if (json[0].resultado === "duplicado") {
                 mensaje("Marca duplicada", "La marca ya existe. Por favor ingrese una diferente.", "warning");
             } else {
-                Swal.fire('Accion no completada', "No se puede registrar una nuevo categoria", "Error");
+                Swal.fire('Accion no completada', "No se puede registrar una nueva marca", "Error");
             }
         }).fail(function () {
         }).always(function () {

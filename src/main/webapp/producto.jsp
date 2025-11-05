@@ -1,14 +1,20 @@
-<%-- 
-    Document   : producto
-    Created on : 1 oct 2025, 22:06:07
-    Author     : thebe
---%>
+
 <%-- 
     Document   : productos_crud
     Created on : 30 sep. 2025, 20:18:21
     Author     : Maris
 --%>
+<%@ page import="com.ues.edu.models.Usuario" %>
 
+<%
+    HttpSession sesion = request.getSession(false);
+    if (sesion == null || sesion.getAttribute("Usuario") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
+    Usuario usuario = (Usuario) sesion.getAttribute("Usuario");
+%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -46,7 +52,7 @@
                 <i class="fas fa-bars"></i> <span>Menú</span>
             </div>
             <nav class="menu">
-                <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
+                <a href="index.jsp"><i class="fas fa-home"></i> <span>Inicio</span></a>
                 <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
                 <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
                 <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>

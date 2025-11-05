@@ -15,24 +15,39 @@ public class Usuario {
  private   String contraseña;
  private   boolean estado;
  private   Empleado empleado;
+ private String codigoRecuperacion; 
 
     public Usuario() {
     }
 
-    public Usuario(int codigoUsuario, String correo, String contraseña, boolean estado, Empleado empleado) {
+    public Usuario(int codigoUsuario, String correo, String contraseña, boolean estado, Empleado empleado, String codigoRecuperacion) {
         this.codigoUsuario = codigoUsuario;
         this.correo = correo;
         this.contraseña = contraseña;
         this.estado = estado;
         this.empleado = empleado;
+        this.codigoRecuperacion = codigoRecuperacion;
     }
 
-    public Usuario(String correo, String contraseña, boolean estado, Empleado empleado) {
+    public Usuario(String correo, String contraseña, boolean estado, Empleado empleado, String codigoRecuperacion) {
         this.correo = correo;
         this.contraseña = contraseña;
         this.estado = estado;
         this.empleado = empleado;
+        this.codigoRecuperacion = codigoRecuperacion;
     }
+
+    public String getCodigoRecuperacion() {
+        return codigoRecuperacion;
+    }
+
+    public void setCodigoRecuperacion(String codigoRecuperacion) {
+        this.codigoRecuperacion = codigoRecuperacion;
+    }
+
+  
+
+   
 
     public int getCodigoUsuario() {
         return codigoUsuario;
@@ -65,6 +80,8 @@ public class Usuario {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+   
 
     public Empleado getEmpleado() {
         return empleado;

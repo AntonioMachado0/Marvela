@@ -107,8 +107,8 @@ public class ComprasController extends HttpServlet {
 
             long diferenciaMillis = fechaActual.getTime() - obj.getFechaCompra().getTime();
             long diasPasados = diferenciaMillis / (1000 * 60 * 60 * 24);
-            boolean vencida = diasPasados >= 3;
-            long diasRestantes = Math.max(0, 3 - diasPasados);
+            boolean vencida = diasPasados >= 5;
+            long diasRestantes = Math.max(0, 5 - diasPasados);
 
             html1 += "<tr class=\"text-center\">";
             html1 += "<td class=\"text-center\">" + obj.getNumeroOrden() + "</td>";
@@ -255,23 +255,48 @@ public class ComprasController extends HttpServlet {
                     }
                     catIns.setNumeroOrden(numeroOrden.trim());
 
-                    // Conversión segura de fecha en formato dd/MM/yyyy
-                    String fechaStr = request.getParameter("fecha_de_orden");
-                    if (fechaStr != null && !fechaStr.trim().isEmpty()) {
-                        try {
-                            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                            formato.setLenient(false);
-                            java.util.Date fechaUtil = formato.parse(fechaStr.trim());
-                            java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
-                            catIns.setFechaCompra(fechaSQL);
-                            System.out.println("[FECHA] Fecha convertida correctamente: " + fechaSQL);
-                        } catch (ParseException e) {
-                            System.out.println("[ERROR FECHA] Formato inválido: " + fechaStr);
-                            jsonObjet.put("resultado", "error_fecha");
-                            jsonObjet.put("detalle", "La fecha debe estar en formato dd/MM/yyyy");
-                            break;
-                        }
-                    }
+//                    // Conversión segura de fecha en formato dd/MM/yyyy
+//                    String fechaStr = request.getParameter("fecha_de_orden");
+//                    if (fechaStr != null && !fechaStr.trim().isEmpty()) {
+//                        try {
+//                            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+//                            formato.setLenient(false);
+//                            java.util.Date fechaUtil = formato.parse(fechaStr.trim());
+//                            java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
+//                            catIns.setFechaCompra(fechaSQL);
+//                            System.out.println("[FECHA] Fecha convertida correctamente: " + fechaSQL);
+//                        } catch (ParseException e) {
+//                            System.out.println("[ERROR FECHA] Formato inválido: " + fechaStr);
+//                            jsonObjet.put("resultado", "error_fecha");
+//                            jsonObjet.put("detalle", "La fecha debe estar en formato dd/MM/yyyy");
+//                            break;
+//                        }
+//                    }
+// Conversión segura de fecha en formato dd/MM/yyyy
+String fechaStr = request.getParameter("fecha_de_orden");
+java.sql.Date fechaSQL = null;
+
+if (fechaStr != null && !fechaStr.trim().isEmpty()) {
+    try {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        formato.setLenient(false);
+        java.util.Date fechaUtil = formato.parse(fechaStr.trim());
+        fechaSQL = new java.sql.Date(fechaUtil.getTime());
+        System.out.println("[FECHA] Fecha convertida correctamente: " + fechaSQL);
+    } catch (ParseException e) {
+        System.out.println("[ERROR FECHA] Formato inválido: " + fechaStr);
+        jsonObjet.put("resultado", "error_fecha");
+        jsonObjet.put("detalle", "La fecha debe estar en formato dd/MM/yyyy");
+        break;
+    }
+} else {
+    // Si no se proporciona fecha, usar la fecha actual
+    fechaSQL = new java.sql.Date(System.currentTimeMillis());
+    System.out.println("[FECHA] Fecha actual asignada automáticamente: " + fechaSQL);
+}
+
+// Asignar la fecha (convertida o actual) al objeto
+catIns.setFechaCompra(fechaSQL);
 
                     // Validación segura de código de empleado
                     String codigoEmpleadoStr = request.getParameter("codigo_empleado");

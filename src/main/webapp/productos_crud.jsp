@@ -14,7 +14,17 @@
 <%@page import="com.ues.edu.models.Compras"%>
 <%@page import="com.ues.edu.models.dao.ComprasDao"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="com.ues.edu.models.Usuario" %>
 
+<%
+    HttpSession sesion = request.getSession(false);
+    if (sesion == null || sesion.getAttribute("Usuario") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
+    Usuario usuario = (Usuario) sesion.getAttribute("Usuario");
+%>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -53,40 +63,39 @@
                 <i class="fas fa-bars"></i> <span>Menú</span>
             </div>
             <nav class="menu">
-                <a href="index.html"><i class="fas fa-home"></i> <span>Inicio</span></a>
-                <a href="ventas.jsp"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
-                <a href="frmEmpleado.jsp"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
-                <a href="proveedores_crud.jsp"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
-                <a href="categoria_crud.jsp"><i class="fas fa-tags"></i> <span>Categoría</span></a>
-                <a href="frmRol.jsp"><i class="fas fa-user-tag"></i> <span>Roles</span></a>
-                <a href="Unidad_Medida_crud.jsp"><i class="fas fa-ruler-combined"></i> <span>Unidad de Medida</span></a>
-                <a href="marca_crud.jsp"><i class="fas fa-stamp"></i> <span>Marca</span></a>
-                <a href="compras_crud.jsp"><i class="fas fa-shopping-cart"></i> <span>Compras</span></a>
-                <a href="frmInventario.jsp"><i class="fas fa-warehouse"></i> <span>Inventario</span></a>
-                <a href="productos_crud.jsp"><i class="fas fa-cubes"></i> <span>Productos</span></a>
-                <a href="vistaEscaneos.jsp"><i class="fas fa-barcode"></i> <span>Productos Escaneados</span></a>
-                <a href="Backup.jsp"><i class="fas fa-database"></i> <span>Backup</span></a>
+               <a href="index.jsp" id="inicio"><i class="fas fa-home"></i> <span>Inicio</span></a>
+                <a href="frmRol.jsp" id="roles"><i class="fas fa-user-tag"></i> <span>Roles</span></a>
+                <a href="frmEmpleado.jsp" id="empleados"><i class="fas fa-user-tie"></i> <span>Empleados</span></a>
+                <a href="usuario_crud.jsp" id="usuario"><i class="fas fa-user-shield"></i> <span>Usuarios</span></a>
+                <a href="proveedores_crud.jsp" id="proveedores"><i class="fas fa-handshake"></i> <span>Proveedores</span></a>
+                <a href="categoria_crud.jsp" id="categoria"><i class="fas fa-tags"></i> <span>Categoría</span></a>
+                <a href="Unidad_Medida_crud.jsp" id="unidadMedida"><i class="fas fa-ruler-combined"></i> <span>Unidad de Medida</span></a>
+                <a href="marca_crud.jsp" id="marca"><i class="fas fa-stamp"></i> <span>Marca</span></a>
+                <a href="productos_crud.jsp" id="productos"><i class="fas fa-cubes"></i> <span>Productos</span></a>
+                <a href="compras_crud.jsp" id="compras"><i class="fas fa-shopping-cart"></i> <span>Compras</span></a>
+                <a href="frmInventario.jsp" id="inventario"><i class="fas fa-warehouse"></i> <span>Inventario</span></a>              
+                <a href="vistaEscaneos.jsp" id="ventas"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></a>
+                <a href="Backup.jsp" id="backup"><i class="fas fa-database"></i> <span>Backup</span></a>
             </nav>
         </aside>
 
         <main>
             <header class="barra-superior">
                 <div class="marca">Marvela</div>
-                <div class="derecha">
-                    <i class="fas fa-bell campana">
-                        <span class="badge-notificacion">3</span>
+             <div class="derecha">
+                    <i class="fas fa-user-circle campana">
+                        <span class="badge-notificacion">1</span>
                     </i>
                     <div class="usuario-dropdown">
                         <div class="usuario-dropdown-toggle" id="usuarioToggle">
-                            <span>Katherine</span>
+                            <span id="nombreUsuario"><%= usuario.getEmpleado().getNombreCompleto()%></span>
                             <i class="fas fa-caret-down"></i>
                         </div>
                         <div class="usuario-dropdown-menu" id="usuarioMenu">
                             <a href="#">Mi perfil</a>
-                            <a href="#">Cerrar sesión</a>
+                             <a href="acceso.jsp">Cerrar sesión</a>
                         </div>
                     </div>
-
                 </div>
 
 
@@ -328,31 +337,7 @@
         <%@include file="footer.jsp" %>
     </main>
 
-    <script>
-
-            document.getElementById('colapsarMenu')?.addEventListener('click', () => {
-                document.getElementById('sidebar')?.classList.toggle('colapsado');
-            });
-
-            document.getElementById('toggleMenu')?.addEventListener('click', () => {
-                document.getElementById('sidebar')?.classList.toggle('activo');
-            });
-
-            // Mostrar/ocultar menú de usuario
-            const usuarioToggle = document.getElementById('usuarioToggle');
-            const usuarioMenu = document.getElementById('usuarioMenu');
-
-            usuarioToggle.addEventListener('click', () => {
-                usuarioMenu.style.display = usuarioMenu.style.display === 'flex' ? 'none' : 'flex';
-            });
-
-            // Cerrar el menú si se hace clic fuera
-            document.addEventListener('click', (e) => {
-                if (!usuarioToggle.contains(e.target) && !usuarioMenu.contains(e.target)) {
-                    usuarioMenu.style.display = 'none';
-                }
-            });
-    </script>
+ 
     <script>
         document.getElementById("imageFile").addEventListener("change", function (event) {
             const file = event.target.files[0];
@@ -373,7 +358,50 @@
             reader.readAsDataURL(file);
         });
     </script>
+<script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const usuario = {
+                                                    nombre: "<%= usuario.getEmpleado().getNombreCompleto()%>",
+                                                    rol: "<%= usuario.getEmpleado().getRol().getNombreRol()%>"
+                                                };
 
+                                                // Mostrar nombre y rol
+                                                $("#nombreUsuario").text(usuario.nombre);
+                                                $("#rolUsuario").text(usuario.rol);
+
+                                                // Ocultar módulos si es Empleado
+                                                if (usuario.rol === "Empleado") {
+                                                    $("#empleados,  #roles, #usuario,  #backup").hide();
+                                                }
+
+                                                // Menú interactivo
+                                                document.getElementById('colapsarMenu')?.addEventListener('click', () => {
+                                                    document.getElementById('sidebar')?.classList.toggle('colapsado');
+                                                });
+
+                                                const usuarioToggle = document.getElementById('usuarioToggle');
+                                                const usuarioMenu = document.getElementById('usuarioMenu');
+
+                                                usuarioToggle.addEventListener('click', () => {
+                                                    usuarioMenu.style.display = usuarioMenu.style.display === 'flex' ? 'none' : 'flex';
+                                                });
+
+                                                document.addEventListener('click', (e) => {
+                                                    if (!usuarioToggle.contains(e.target) && !usuarioMenu.contains(e.target)) {
+                                                        usuarioMenu.style.display = 'none';
+                                                    }
+                                                });
+
+                                                document.querySelector('.fa-bell')?.addEventListener('click', () => {
+                                                    Swal.fire({
+                                                        title: 'Notificaciones',
+                                                        text: 'Tienes 3 nuevas notificaciones.',
+                                                        icon: 'info',
+                                                        confirmButtonText: 'Ver'
+                                                    });
+                                                });
+                                            });
+        </script>
 
 </body>
 <div id="toast" class="toast">Guardado correctamente ?</div>

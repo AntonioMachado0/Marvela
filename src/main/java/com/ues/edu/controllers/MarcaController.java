@@ -77,8 +77,8 @@ public class MarcaController extends HttpServlet {
                             + "<thead>"
                             + "<tr class=\"mb-2 green text-center\">"
                             // + "<th class=\"text-center\" style=\" color: white !important;\">N</th>"
-                            + "<th class=\"text-center\" style=\" color: white !important;\">Marca</th>"
-                            + "<th class=\"text-center\" style=\" color: white !important;\">ACCION</th>"
+                            + "<th class=\"text-center\" style=\" color: white !important;\">MARCA</th>"
+                            + "<th class=\"text-center\" style=\" color: white !important;\">ACCIÓN</th>"
                             + "</tr>"
                             + "</thead>"
                             + "<tbody>";
